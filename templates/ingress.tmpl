@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: "{{.Application_name}}-{{.Name}}"
+  name: "{{.Application_name}}-{{.Deploy.Name}}"
   namespace: "{{.Namespace}}"
   annotations:
     kubernetes.io/tls-acme: "true"
@@ -14,15 +14,17 @@ metadata:
     nginx.org/server-tokens: "false"
 spec:
   rules:
-  - host: {{.Namespace}}-{{.Application_name}}-{{.Name}}.gel.camp
+{{range $hostname := .Hostnames -}}
+  - host: {{$hostname}}
     http:
       paths:
       - backend:
-          serviceName: {{.Application_name}}
-          servicePort: {{.Deploy.Ports.Internal.HTTP}}
+          serviceName: {{$.Application_name}}-{{$.Deploy.Name}}
+          servicePort: {{$.Deploy.Ports.Internal.HTTP}}
         path: /
   tls:
   - hosts:
-    - {{.Namespace}}-{{.Application_name}}-{{.Name}}.gel.camp
-    secretName: {{.Namespace}}-{{.Application_name}}-{{.Name}}.gel.camp
+    - {{$hostname}}
+    secretName: {{$hostname}}
+{{end -}}
 ---

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{.Application_name}}-{{.Name}}"
+  name: "{{.Application_name}}-{{.Deploy.Name}}"
   namespace: {{.Namespace}}
 spec:
   ports:
@@ -9,7 +9,7 @@ spec:
     protocol: TCP
     targetPort: {{.Deploy.Ports.Internal.HTTP}}
   selector:
-    application: "{{.Application_name}}-{{.Name}}"
+    application: "{{.Application_name}}-{{.Deploy.Name}}"
     build: "{{.Build_id}}"
   sessionAffinity: None
 ---

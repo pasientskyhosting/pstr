@@ -7,15 +7,15 @@ import (
 	"text/template"
 )
 
-func createIngress(Name string, AppObj App) {
+func createIngress(AppObj App) {
 	if AppObj.Ports.External.HTTP > 0 {
 
-		fmt.Printf("# Ingress for %s-%s-%s\n", application_name, Name, build_id)
+		fmt.Printf("# Ingress for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 		values := &Ingresstmpl{
 			Application_name: application_name,
 			Namespace:        deploy_namespace,
-			Name:             Name,
 			Deploy:           AppObj,
+			Hostnames:        hostnames,
 		}
 
 		t := template.Must(template.ParseFiles("templates/ingress.tmpl"))
@@ -26,6 +26,6 @@ func createIngress(Name string, AppObj App) {
 		}
 
 	} else {
-		fmt.Fprintf(os.Stderr, "# %s-%s has no external port, Skipping Ingress\n", application_name, Name)
+		fmt.Fprintf(os.Stderr, "# %s-%s has no external port, Skipping Ingress\n", application_name, AppObj.Name)
 	}
 }

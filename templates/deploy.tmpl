@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
-    application: "{{.Application_name}}-{{.Name}}"
+    application: "{{.Application_name}}-{{.Deploy.Name}}"
     build: "{{.Build_id}}"
     type: "{{.Deploy.Type}}"
     bamboo_deploy_release: "{{.Bamboo_deploy_release}}"
@@ -12,7 +12,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      application: "{{.Application_name}}-{{.Name}}"
+      application: "{{.Application_name}}-{{.Deploy.Name}}"
       build: "{{.Build_id}}"
   strategy:
     rollingUpdate:
@@ -22,7 +22,7 @@ spec:
   template:
     metadata:
       labels:
-        application: "{{.Application_name}}-{{.Name}}"
+        application: "{{.Application_name}}-{{.Deploy.Name}}"
         build: "{{.Build_id}}"
         type: "{{.Deploy.Type}}"
         bamboo_deploy_release: "{{.Bamboo_deploy_release}}"

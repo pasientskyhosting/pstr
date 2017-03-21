@@ -7,8 +7,8 @@ import (
 	"text/template"
 )
 
-func createDeploy(Name string, AppObj App) {
-	fmt.Printf("# Deployment for %s-%s-%s\n", application_name, Name, build_id)
+func createDeploy(AppObj App) {
+	fmt.Printf("# Deployment for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 	values := &Deploytmpl{
 		Application_name:      application_name,
 		Bamboo_deploy_release: bamboo_deploy_release,
@@ -20,10 +20,9 @@ func createDeploy(Name string, AppObj App) {
 		CONSUL_USERNAME:       CONSUL_USERNAME,
 		CONSUL_ENVIRONMENT:    CONSUL_ENVIRONMENT,
 		Deploy:                AppObj,
-		Deploy_name:           application_name + "-" + Name + "-" + build_id,
+		Deploy_name:           application_name + "-" + AppObj.Name + "-" + build_id,
 		Git_repo:              git_repo,
 		Namespace:             deploy_namespace,
-		Name:                  Name,
 		NEW_RELIC_LICENSE_KEY: NEW_RELIC_LICENSE_KEY,
 		Ssh_key:               ssh_key,
 	}

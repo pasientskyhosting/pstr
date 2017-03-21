@@ -7,12 +7,11 @@ import (
 	"text/template"
 )
 
-func createService(Name string, AppObj App) {
-	fmt.Printf("# Service for %s-%s-%s\n", application_name, Name, build_id)
+func createService(AppObj App) {
+	fmt.Printf("# Service for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 	values := &Servicetmpl{
 		Application_name: application_name,
 		Namespace:        deploy_namespace,
-		Name:             Name,
 		Build_id:         build_id,
 		Deploy:           AppObj,
 	}

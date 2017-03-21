@@ -1,6 +1,7 @@
 package main
 
 type App struct {
+	Name        string `json:"name"`
 	Group       string `json:"group"`
 	Type        string `json:"type"`
 	Scalability struct {
@@ -49,14 +50,13 @@ type App struct {
 type Ingresstmpl struct {
 	Application_name string
 	Deploy           App
-	Name             string
 	Namespace        string
+	Hostnames        []string
 }
 
 type Autoscalertmpl struct {
 	Deploy      App
 	Deploy_name string
-	Name        string
 	Namespace   string
 }
 
@@ -65,7 +65,6 @@ type Servicetmpl struct {
 	Namespace        string
 	Cluster_ip       string
 	Build_id         string
-	Name             string
 	Deploy           App
 }
 
@@ -82,7 +81,6 @@ type Deploytmpl struct {
 	Deploy                App
 	Deploy_name           string
 	Git_repo              string
-	Name                  string
 	Namespace             string
 	NEW_RELIC_LICENSE_KEY string
 	Ssh_key               string
