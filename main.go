@@ -75,8 +75,8 @@ func init() {
 
 func CreateFH(Filename string) (fp *os.File) {
 	var err error
-	os.Remove(Filename)
 	if O_OUTPUT != "" {
+		os.Remove(Filename)
 		fp, err = os.OpenFile(Filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 		if err != nil {
 			log.Println("create file: ", err)
@@ -115,6 +115,7 @@ func main() {
 		fmt.Fprint(os.Stderr, "Json decode error, no services found\n")
 		os.Exit(1)
 	}
+
 
 	f_deploy := CreateFH(O_OUTPUT + "/deploy.yaml")
 	defer f_deploy.Close()
