@@ -11,8 +11,7 @@ import (
 	"strings"
 )
 
-//var deploy_name string
-var application_name string
+// Variables gotten from Environment
 var bamboo_buildNumber = os.Getenv("bamboo_buildNumber")
 var bamboo_deploy_release = os.Getenv("bamboo_deploy_release")
 var build_id = os.Getenv("build_id")
@@ -23,6 +22,11 @@ var CONSUL_PASSWORD = os.Getenv("CONSUL_PASSWORD")
 var CONSUL_URL = os.Getenv("CONSUL_URL")
 var CONSUL_USERNAME = os.Getenv("CONSUL_USERNAME")
 var deploy_build string
+var NEW_RELIC_LICENSE_KEY = os.Getenv("NEW_RELIC_LICENSE_KEY")
+var ssh_key = os.Getenv("ssh_key")
+
+// Static configs
+var application_name string
 var deploy_namespace string
 var git_repo = os.Getenv("git_repo")
 var hostnames []string
@@ -31,9 +35,7 @@ var M_AUTOSCALER bool
 var M_DEPLOY bool
 var M_INGRESS bool
 var M_SERVICE bool
-var NEW_RELIC_LICENSE_KEY = os.Getenv("NEW_RELIC_LICENSE_KEY")
 var O_LIMIT string
-var ssh_key = os.Getenv("ssh_key")
 var O_FILENAME string
 
 func init() {
@@ -45,7 +47,7 @@ func init() {
 	flag.StringVar(&deploy_build, "build", "", "build")
 	flag.StringVar(&deploy_namespace, "namespace", "", "namespace for deployment")
 	flag.StringVar(&O_LIMIT, "limit", "", "Limit the run to certain app name")
-	flag.StringVar(&O_FILENAME, "file", "", "Filename to parse")
+	flag.StringVar(&O_FILENAME, "file", "./serviceDefinition.json", "Filename to parse")
 	var D_HOSTNAMES = flag.String("hostname", "", "Hostnames for ingress. comma separated")
 	flag.Parse()
 	if deploy_build == "" || deploy_namespace == "" {
