@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{.Application_name}}-{{.Deploy.Name}}"
+  name: "{{.Application_name}}-{{.Deploy.Name}}-{{.Build_id}}"
   namespace: {{.Namespace}}
 spec:
   ports:

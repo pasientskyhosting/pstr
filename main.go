@@ -14,7 +14,7 @@ import (
 // Variables gotten from Environment
 var bamboo_buildNumber = os.Getenv("bamboo_buildNumber")
 var bamboo_deploy_release = os.Getenv("bamboo_deploy_release")
-var build_id = os.Getenv("build_id")
+//var build_id = os.Getenv("build_id")
 var cluster_ip = os.Getenv("cluster_ip")
 var CONSUL_APPLICATION = os.Getenv("CONSUL_APPLICATION")
 var CONSUL_ENVIRONMENT = os.Getenv("CONSUL_ENVIRONMENT")
@@ -29,6 +29,7 @@ var ssh_key = os.Getenv("ssh_key")
 var application_name string
 var deploy_namespace string
 var git_repo = os.Getenv("git_repo")
+var build_id string
 var hostnames []string
 var M_ALL bool
 var M_AUTOSCALER bool
@@ -44,13 +45,15 @@ func init() {
 	flag.BoolVar(&M_DEPLOY, "deploy", false, "Create deployments")
 	flag.BoolVar(&M_INGRESS, "ingress", false, "Create ingress rules")
 	flag.BoolVar(&M_SERVICE, "service", false, "Create services")
-	flag.StringVar(&deploy_build, "build", "", "build")
+	flag.StringVar(&build_id, "build_id", "", "build")
 	flag.StringVar(&deploy_namespace, "namespace", "", "namespace for deployment")
 	flag.StringVar(&O_LIMIT, "limit", "", "Limit the run to certain app name")
 	flag.StringVar(&O_FILENAME, "file", "./serviceDefinition.json", "Filename to parse")
 	var D_HOSTNAMES = flag.String("hostname", "", "Hostnames for ingress. comma separated")
 	flag.Parse()
-	if deploy_build == "" || deploy_namespace == "" {
+	hostnames = strings.Split(*D_HOSTNAMES, ",")
+	
+	if build_id == "" || deploy_namespace == "" {
 		//if deploy_build == "" || deploy_namespace == "" || *D_HOSTNAMES == "" {
 		println(deploy_build)
 		println(deploy_namespace)
@@ -59,7 +62,6 @@ func init() {
 		os.Exit(1)
 	}
 
-	hostnames = strings.Split(*D_HOSTNAMES, ",")
 	if M_ALL {
 		M_DEPLOY = true
 		M_SERVICE = true
