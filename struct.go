@@ -52,6 +52,7 @@ type Ingresstmpl struct {
 	Deploy           App
 	Namespace        string
 	Hostnames        []string
+	Build_id         string
 }
 
 type Autoscalertmpl struct {

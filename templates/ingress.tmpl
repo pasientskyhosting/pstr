@@ -19,7 +19,7 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: {{$.Application_name}}-{{$.Deploy.Name}}
+          serviceName: {{$.Application_name}}-{{$.Deploy.Name}}-{{$.Build_id}}
           servicePort: {{$.Deploy.Ports.Internal.HTTP}}
         path: /
   tls:

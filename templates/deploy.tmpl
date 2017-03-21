@@ -31,7 +31,7 @@ spec:
       - image: "{{.Deploy.ImageName}}"
         imagePullPolicy: Always
         name: "{{.Deploy_name}}"
-        {{if .Deploy.PreStop.HTTPGet.Path}}lifecycle:
+        {{if .Deploy.PreStop.HTTPGet.Path -}}lifecycle:
           preStop:
             httpGet:
               path: "{{.Deploy.PreStop.HTTPGet.Path}}"
@@ -39,7 +39,7 @@ spec:
         {{else if .Deploy.PreStop.Exec.Command}}lifecycle:
           preStop:
             exec:
-              command: [{{ range $index,$cmd := .Deploy.PreStop.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end}}
+              command: [{{ range $index,$cmd := .Deploy.PreStop.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end -}}
         readinessProbe:
           httpGet:
             path: {{.Deploy.Readiness.Path}}

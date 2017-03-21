@@ -27,10 +27,10 @@ Set namespace to use in template rendering
 ## --build <string>
 Set build. This propagates the value of "Deploy_build"
 
-##--hostname <string>
+## --hostname <string>
 Comma delimited list of hostnames to use for template rendering.
 
-**WARNING, If multiple services has Service.#.Ports.External.HTTP set this will generate multiple ingress rules with the same hostname if --limit is not used!**
+**WARNING, If multiple services has Service.#.Ports.External.HTTP set this will generate multiple ingress rules with the same hostname if --limit is not used together with --ingress**
 
 
 ## notepad

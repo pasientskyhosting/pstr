@@ -16,6 +16,7 @@ func createIngress(AppObj App) {
 			Namespace:        deploy_namespace,
 			Deploy:           AppObj,
 			Hostnames:        hostnames,
+			Build_id:         build_id,
 		}
 
 		t := template.Must(template.ParseFiles("templates/ingress.tmpl"))

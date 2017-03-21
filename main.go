@@ -46,8 +46,8 @@ func init() {
 	flag.StringVar(&O_LIMIT, "limit", "", "Limit the run to certain app name")
 	var D_HOSTNAMES = flag.String("hostname", "", "Hostnames for ingress. comma separated")
 	flag.Parse()
-    if deploy_build == "" || deploy_namespace == "" {
-	//if deploy_build == "" || deploy_namespace == "" || *D_HOSTNAMES == "" {
+	if deploy_build == "" || deploy_namespace == "" {
+		//if deploy_build == "" || deploy_namespace == "" || *D_HOSTNAMES == "" {
 		println(deploy_build)
 		println(deploy_namespace)
 		println(hostnames)
