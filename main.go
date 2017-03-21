@@ -50,7 +50,7 @@ func init() {
 	flag.StringVar(&build_id, "build_id", "", "build")
 	flag.StringVar(&deploy_namespace, "namespace", "", "namespace for deployment")
 	flag.StringVar(&O_LIMIT, "limit", "", "Limit the run to certain app name")
-	flag.StringVar(&O_FILENAME, "file", "./serviceDefinition.json", "Filename to parse")
+	flag.StringVar(&O_FILENAME, "file", "serviceDefinition.json", "Filename to parse")
 	flag.StringVar(&O_OUTPUT, "output", "", "Output folder")
 	var D_HOSTNAMES = flag.String("hostname", "", "Hostnames for ingress. comma separated")
 	flag.Parse()
