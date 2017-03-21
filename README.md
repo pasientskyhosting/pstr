@@ -30,6 +30,12 @@ Set build. This propagates the value of "Deploy_build"
 ## --hostname <string>
 Comma delimited list of hostnames to use for template rendering.
 
+## --output <string>
+Path to where to write output YAML files.
+
+If not specified all output will be written to STDOUT
+
+
 **WARNING, If multiple services has Service.#.Ports.External.HTTP set this will generate multiple ingress rules with the same hostname if --limit is not used together with**
 
 

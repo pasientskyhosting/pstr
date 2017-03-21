@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-func createDeploy(AppObj App) {
+func createDeploy(fp *os.File, AppObj App) {
 	fmt.Printf("# Deployment for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 	values := &Deploytmpl{
 		Application_name:      application_name,
@@ -26,8 +26,10 @@ func createDeploy(AppObj App) {
 		NEW_RELIC_LICENSE_KEY: NEW_RELIC_LICENSE_KEY,
 		Ssh_key:               ssh_key,
 	}
+
 	t := template.Must(template.ParseFiles("templates/deploy.tmpl"))
-	err := t.Execute(os.Stdout, values)
+	err := t.Execute(fp, values)
+
 	if err != nil {
 		log.Fatalf("template execution: %s", err)
 		os.Exit(1)

@@ -14,6 +14,7 @@ import (
 // Variables gotten from Environment
 var bamboo_buildNumber = os.Getenv("bamboo_buildNumber")
 var bamboo_deploy_release = os.Getenv("bamboo_deploy_release")
+
 //var build_id = os.Getenv("build_id")
 var cluster_ip = os.Getenv("cluster_ip")
 var CONSUL_APPLICATION = os.Getenv("CONSUL_APPLICATION")
@@ -38,6 +39,7 @@ var M_INGRESS bool
 var M_SERVICE bool
 var O_LIMIT string
 var O_FILENAME string
+var O_OUTPUT string
 
 func init() {
 	flag.BoolVar(&M_ALL, "all", false, "Outputs deploymen, service, autoscaler and ingress")
@@ -49,10 +51,11 @@ func init() {
 	flag.StringVar(&deploy_namespace, "namespace", "", "namespace for deployment")
 	flag.StringVar(&O_LIMIT, "limit", "", "Limit the run to certain app name")
 	flag.StringVar(&O_FILENAME, "file", "./serviceDefinition.json", "Filename to parse")
+	flag.StringVar(&O_OUTPUT, "output", "", "Output folder")
 	var D_HOSTNAMES = flag.String("hostname", "", "Hostnames for ingress. comma separated")
 	flag.Parse()
 	hostnames = strings.Split(*D_HOSTNAMES, ",")
-	
+
 	if build_id == "" || deploy_namespace == "" {
 		//if deploy_build == "" || deploy_namespace == "" || *D_HOSTNAMES == "" {
 		println(deploy_build)
@@ -68,6 +71,21 @@ func init() {
 		M_AUTOSCALER = true
 		M_INGRESS = true
 	}
+}
+
+func CreateFH(Filename string) (fp *os.File) {
+	var err error
+	os.Remove(Filename)
+	if O_OUTPUT != "" {
+		fp, err = os.OpenFile(Filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+		if err != nil {
+			log.Println("create file: ", err)
+			os.Exit(1)
+		}
+	} else {
+		fp = os.Stdout
+	}
+	return fp
 }
 
 func Check_if_limit(AppObj App) bool {
@@ -98,6 +116,18 @@ func main() {
 		os.Exit(1)
 	}
 
+	f_deploy := CreateFH(O_OUTPUT + "/deploy.yaml")
+	defer f_deploy.Close()
+
+	f_service := CreateFH(O_OUTPUT + "/service.yaml")
+	defer f_service.Close()
+
+	f_autoscaler := CreateFH(O_OUTPUT + "/autoscaler.yaml")
+	defer f_autoscaler.Close()
+
+	f_ingress := CreateFH(O_OUTPUT + "/ingress.yaml")
+	defer f_ingress.Close()
+
 	value.ForEach(func(key, value gjson.Result) bool {
 		var AppObj App
 		err := json.Unmarshal([]byte(value.String()), &AppObj)
@@ -106,18 +136,23 @@ func main() {
 			os.Exit(1)
 		} else if Check_if_limit(AppObj) {
 			if M_DEPLOY {
-				createDeploy(AppObj)
+				createDeploy(f_deploy, AppObj)
 			}
 			if M_SERVICE {
-				createService(AppObj)
+				createService(f_service, AppObj)
 			}
 			if M_AUTOSCALER {
-				createAutoScaler(AppObj)
+				createAutoScaler(f_autoscaler, AppObj)
 			}
 			if M_INGRESS {
-				createIngress(AppObj)
+				createIngress(f_ingress, AppObj)
 			}
 		}
 		return true // keep iterating
 	})
+
+	f_deploy.Close()
+	f_service.Close()
+	f_autoscaler.Close()
+	f_ingress.Close()
 }

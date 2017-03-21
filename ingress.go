@@ -7,9 +7,8 @@ import (
 	"text/template"
 )
 
-func createIngress(AppObj App) {
+func createIngress(fp *os.File, AppObj App) {
 	if AppObj.Ports.External.HTTP > 0 {
-
 		fmt.Printf("# Ingress for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 		values := &Ingresstmpl{
 			Application_name: application_name,
@@ -20,7 +19,8 @@ func createIngress(AppObj App) {
 		}
 
 		t := template.Must(template.ParseFiles("templates/ingress.tmpl"))
-		err := t.Execute(os.Stdout, values)
+		err := t.Execute(fp, values)
+
 		if err != nil {
 			log.Fatalf("template execution: %s", err)
 			os.Exit(1)
