@@ -1,0 +1,92 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    application: "{{.Application_name}}-{{.Name}}"
+    build: "{{.Build_id}}"
+    type: "{{.Deploy.Type}}"
+    bamboo_deploy_release: "{{.Bamboo_deploy_release}}"
+  name: "{{.Deploy_name}}"
+  namespace: "{{.Namespace}}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: "{{.Application_name}}-{{.Name}}"
+      build: "{{.Build_id}}"
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        application: "{{.Application_name}}-{{.Name}}"
+        build: "{{.Build_id}}"
+        type: "{{.Deploy.Type}}"
+        bamboo_deploy_release: "{{.Bamboo_deploy_release}}"
+    spec:
+      containers:
+      - image: "{{.Deploy.ImageName}}"
+        imagePullPolicy: Always
+        name: "{{.Deploy_name}}"
+        {{if .Deploy.PreStop.HTTPGet.Path}}lifecycle:
+          preStop:
+            httpGet:
+              path: "{{.Deploy.PreStop.HTTPGet.Path}}"
+              port: {{.Deploy.PreStop.HTTPGet.Port}}
+        {{else if .Deploy.PreStop.Exec.Command}}lifecycle:
+          preStop:
+            exec:
+              command: [{{ range $index,$cmd := .Deploy.PreStop.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end}}
+        readinessProbe:
+          httpGet:
+            path: {{.Deploy.Readiness.Path}}
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: {{.Deploy.Readiness.InitialDelaySeconds}}
+          periodSeconds: {{.Deploy.Readiness.PeriodSeconds}}
+          failureThreshold: {{.Deploy.Readiness.FailureThreshold}}
+          timeoutSeconds: {{.Deploy.Readiness.TimeoutSeconds}}
+          successThreshold: {{.Deploy.Readiness.SuccessThreshold}}
+        livenessProbe:
+          httpGet:
+            path: {{.Deploy.Health.Path}}
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: {{.Deploy.Health.InitialDelaySeconds}}
+          periodSeconds: {{.Deploy.Health.PeriodSeconds}}
+          failureThreshold: {{.Deploy.Health.FailureThreshold}}
+          timeoutSeconds: {{.Deploy.Readiness.TimeoutSeconds}}
+          successThreshold: {{.Deploy.Health.SuccessThreshold}}
+        env:
+          - name: PS_CONSUL_URL
+            value: "{{.CONSUL_URL}}"
+          - name: PS_CONSUL_USERNAME
+            value: "{{.CONSUL_USERNAME}}"
+          - name: PS_CONSUL_PASSWORD
+            value: "{{.CONSUL_PASSWORD}}"
+          - name: PS_APPLICATION
+            value: "{{.CONSUL_APPLICATION}}"
+          - name: PS_ENVIRONMENT
+            value: "{{.CONSUL_ENVIRONMENT}}"
+          - name: PS_BUILD_ID
+            value: "{{.Build_id}}"
+          - name: PS_BUILD_NR
+            value: "{{.Build_nr}}"
+          - name: GIT_REPO
+            value: "{{.Git_repo}}"
+          - name: SSH_KEY
+            value: "{{.Ssh_key}}"
+          - name: NEW_RELIC_LICENSE_KEY
+            value: "{{.NEW_RELIC_LICENSE_KEY}}"
+        resources:
+          requests:
+            cpu: 100m
+        ports:
+        - containerPort: 80
+          protocol: TCP
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+---
