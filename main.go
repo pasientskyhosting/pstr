@@ -34,6 +34,7 @@ var M_SERVICE bool
 var NEW_RELIC_LICENSE_KEY = os.Getenv("NEW_RELIC_LICENSE_KEY")
 var O_LIMIT string
 var ssh_key = os.Getenv("ssh_key")
+var O_FILENAME string
 
 func init() {
 	flag.BoolVar(&M_ALL, "all", false, "Outputs deploymen, service, autoscaler and ingress")
@@ -44,6 +45,7 @@ func init() {
 	flag.StringVar(&deploy_build, "build", "", "build")
 	flag.StringVar(&deploy_namespace, "namespace", "", "namespace for deployment")
 	flag.StringVar(&O_LIMIT, "limit", "", "Limit the run to certain app name")
+	flag.StringVar(&O_FILENAME, "file", "", "Filename to parse")
 	var D_HOSTNAMES = flag.String("hostname", "", "Hostnames for ingress. comma separated")
 	flag.Parse()
 	if deploy_build == "" || deploy_namespace == "" {
@@ -77,7 +79,7 @@ func Check_if_limit(AppObj App) bool {
 }
 
 func main() {
-	file, e := ioutil.ReadFile("./deploy.json")
+	file, e := ioutil.ReadFile(O_FILENAME)
 	if e != nil {
 		fmt.Fprintf(os.Stderr, "File error: %v\n", e)
 		os.Exit(1)
