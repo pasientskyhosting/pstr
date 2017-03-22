@@ -59,7 +59,7 @@ spec:
           periodSeconds: {{.Deploy.Health.PeriodSeconds}}
           failureThreshold: {{.Deploy.Health.FailureThreshold}}
           timeoutSeconds: {{.Deploy.Readiness.TimeoutSeconds}}
-          successThreshold: {{.Deploy.Health.SuccessThreshold}}
+          successThreshold: 1
         env:
           - name: PS_CONSUL_URL
             value: "{{.CONSUL_URL}}"
