@@ -27,6 +27,8 @@ spec:
         type: "{{.Deploy.Type}}"
         bamboo_deploy_release: "{{.Bamboo_deploy_release}}"
     spec:
+      imagePullSecrets:
+      - name: nexus
       containers:
       - image: "{{.Deploy.ImageName}}"
         imagePullPolicy: Always
