@@ -11,35 +11,37 @@ import (
 	"strings"
 )
 
-// Variables gotten from Environment
-var bamboo_buildNumber = os.Getenv("bamboo_buildNumber")
-var bamboo_deploy_release = os.Getenv("bamboo_deploy_release")
+var (
+	// Variables gotten from Environment
+	bamboo_buildNumber    = os.Getenv("bamboo_buildNumber")
+	bamboo_deploy_release = os.Getenv("bamboo_deploy_release")
 
-//var build_id = os.Getenv("build_id")
-var cluster_ip = os.Getenv("cluster_ip")
-var CONSUL_APPLICATION = os.Getenv("CONSUL_APPLICATION")
-var CONSUL_ENVIRONMENT = os.Getenv("CONSUL_ENVIRONMENT")
-var CONSUL_PASSWORD = os.Getenv("CONSUL_PASSWORD")
-var CONSUL_URL = os.Getenv("CONSUL_URL")
-var CONSUL_USERNAME = os.Getenv("CONSUL_USERNAME")
-var deploy_build string
-var NEW_RELIC_LICENSE_KEY = os.Getenv("NEW_RELIC_LICENSE_KEY")
-var ssh_key = os.Getenv("ssh_key")
+	//var build_id = os.Getenv("build_id")
+	cluster_ip            = os.Getenv("cluster_ip")
+	CONSUL_APPLICATION    = os.Getenv("CONSUL_APPLICATION")
+	CONSUL_ENVIRONMENT    = os.Getenv("CONSUL_ENVIRONMENT")
+	CONSUL_PASSWORD       = os.Getenv("CONSUL_PASSWORD")
+	CONSUL_URL            = os.Getenv("CONSUL_URL")
+	CONSUL_USERNAME       = os.Getenv("CONSUL_USERNAME")
+	NEW_RELIC_LICENSE_KEY = os.Getenv("NEW_RELIC_LICENSE_KEY")
+	ssh_key               = os.Getenv("ssh_key")
+	git_repo              = os.Getenv("git_repo")
 
-// Static configs
-var application_name string
-var deploy_namespace string
-var git_repo = os.Getenv("git_repo")
-var build_id string
-var hostnames []string
-var M_ALL bool
-var M_AUTOSCALER bool
-var M_DEPLOY bool
-var M_INGRESS bool
-var M_SERVICE bool
-var O_LIMIT string
-var O_FILENAME string
-var O_OUTPUT string
+	// Static configs
+	deploy_build     string
+	application_name string
+	deploy_namespace string
+	build_id         string
+	hostnames        []string
+	M_ALL            bool
+	M_AUTOSCALER     bool
+	M_DEPLOY         bool
+	M_INGRESS        bool
+	M_SERVICE        bool
+	O_LIMIT          string
+	O_FILENAME       string
+	O_OUTPUT         string
+)
 
 func init() {
 	flag.BoolVar(&M_ALL, "all", false, "Outputs deploymen, service, autoscaler and ingress")
@@ -47,7 +49,7 @@ func init() {
 	flag.BoolVar(&M_DEPLOY, "deploy", false, "Create deployments")
 	flag.BoolVar(&M_INGRESS, "ingress", false, "Create ingress rules")
 	flag.BoolVar(&M_SERVICE, "service", false, "Create services")
-	flag.StringVar(&build_id, "build_id", "", "build")
+	flag.StringVar(&build_id, "build_id", "", "build_id from bamboo")
 	flag.StringVar(&deploy_namespace, "namespace", "", "namespace for deployment")
 	flag.StringVar(&O_LIMIT, "limit", "", "Limit the run to certain app name")
 	flag.StringVar(&O_FILENAME, "file", "serviceDefinition.json", "Filename to parse")
@@ -89,7 +91,7 @@ func CreateFH(Filename string) (fp *os.File) {
 }
 
 func Check_if_limit(AppObj App) bool {
-	if len(O_LIMIT) > 0 {
+	if O_LIMIT != "" {
 		if AppObj.Name == O_LIMIT {
 			return true
 		} else {
@@ -115,7 +117,6 @@ func main() {
 		fmt.Fprint(os.Stderr, "Json decode error, no services found\n")
 		os.Exit(1)
 	}
-
 
 	f_deploy := CreateFH(O_OUTPUT + "/deploy.yaml")
 	defer f_deploy.Close()

@@ -14,7 +14,7 @@ metadata:
     nginx.org/server-tokens: "false"
 spec:
   rules:
-{{range $hostname := .Hostnames -}}
+{{range $hostname := .Hostnames}}
   - host: {{$hostname}}
     http:
       paths:
@@ -26,5 +26,5 @@ spec:
   - hosts:
     - {{$hostname}}
     secretName: {{$hostname}}
-{{end -}}
+{{end}}
 ---

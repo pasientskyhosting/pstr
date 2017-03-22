@@ -40,7 +40,7 @@ If not specified all output will be written to STDOUT
 
 
 ## notepad
-bamboo_deploy_release="34" bamboo_bulildNumber="4324" CONSUL_APPLICATION="consul_app" cluster_ip="127.0.0.1" CONSUL_ENVIRONMENT="consul_env" CONSUL_PASSWORD="consul_pass" bamboo_buildNumber="123" CONSUL_URL="http://consul" CONSUL_USERNAME="consul_user" git_repo="http://git.repo" ssh_key="rsa1234" NEW_RELIC_LICENSE_KEY="9876er54321" go run *.go  --build_id dfb1337 --namespace=pltest --all --hostname=www.roffe.nu,korv.asdf.com --file ./serviceDefinition.json
+bamboo_deploy_release="34" bamboo_buildNumber="43d24" CONSUL_APPLICATION="consul_app" cluster_ip="127.0.0.1" CONSUL_ENVIRONMENT="consul_env" CONSUL_PASSWORD="consul_pass"  CONSUL_URL="http://consul" CONSUL_USERNAME="consul_user" git_repo="http://git.repo" ssh_key="rsa1234" NEW_RELIC_LICENSE_KEY="9876er54321" go run *.go  --build_id dfb1337 --namespace=hptest --all --hostname=test.domain.com,test2.another.com --file ./serviceDefinition.json --output ./out --limit app
 
 
-bamboo_deploy_release="34" bamboo_bulildNumber="4324" CONSUL_APPLICATION="consul_app" cluster_ip="127.0.0.1" CONSUL_ENVIRONMENT="consul_env" CONSUL_PASSWORD="consul_pass" bamboo_buildNumber="123" CONSUL_URL="http://consul" CONSUL_USERNAME="consul_user" git_repo="http://git.repo" ssh_key="rsa1234" NEW_RELIC_LICENSE_KEY="9876er54321" ./pstr --build_id dfb1337 --namespace=pltest --all --hostname=www.roffe.nu,korv.asdf.com --file ./serviceDefinition.json
+bamboo_deploy_release="34" bamboo_buildNumber="43d24" CONSUL_APPLICATION="consul_app" cluster_ip="127.0.0.1" CONSUL_ENVIRONMENT="consul_env" CONSUL_PASSWORD="consul_pass"  CONSUL_URL="http://consul" CONSUL_USERNAME="consul_user" git_repo="http://git.repo" ssh_key="rsa1234" NEW_RELIC_LICENSE_KEY="9876er54321" ./pstr --build_id dfb1337 --namespace=hptest --all --hostname=test.domain.com,test2.another.com --file ./serviceDefinition.json --output ./out --limit app
