@@ -84,5 +84,7 @@ type Deploytmpl struct {
 	Git_repo              string
 	Namespace             string
 	NEW_RELIC_LICENSE_KEY string
+    NEW_RELIC_API_URL     string
+    NEW_RELIC_API_KEY_PASSWORD string
 	Ssh_key               string
 }

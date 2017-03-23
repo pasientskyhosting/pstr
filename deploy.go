@@ -24,7 +24,7 @@ func createDeploy(fp *os.File, AppObj App) {
 		Git_repo:              git_repo,
 		Namespace:             deploy_namespace,
 		NEW_RELIC_LICENSE_KEY: NEW_RELIC_LICENSE_KEY,
-        NEW_RELIC_API_URL: NEW_RELIC_API_URL,
+        NEW_RELIC_API_URL:     NEW_RELIC_API_URL,
         NEW_RELIC_API_KEY_PASSWORD: NEW_RELIC_API_KEY_PASSWORD,
 		Ssh_key:               ssh_key,
 	}
