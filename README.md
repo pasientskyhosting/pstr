@@ -1,7 +1,5 @@
 # PatientSky Template Renderer ( PSTR )
-
-Templates/
-
+This project is to render templates used for Kubernetes deployment
 
 ## --all <bool>
 Renders Deployment, Service, Autoscaler & Ingress from Json
@@ -14,6 +12,9 @@ Renders only deployment
 
 ## --service <bool>
 Renders only service
+
+## --genericservice <bool>
+Renders only generic service
 
 ## --autoscaler
 Renders only HPA ( AutoScaler )
