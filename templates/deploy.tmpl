@@ -79,6 +79,12 @@ spec:
             value: "{{.Build_nr}}"
           - name: NEW_RELIC_LICENSE_KEY
             value: "{{.NEW_RELIC_LICENSE_KEY}}"
+          - name: PS_BASE_HOST
+            value: "{{.Application_name}}-{{.Deploy.Name}}-{{.Build_id}}.{{.Namespace}}.svc.cluster.local"
+          - name: NEW_RELIC_API_URL
+            value: "{{.NEW_RELIC_API_URL}}"
+          - name: NEW_RELIC_API_KEY_PASSWORD
+            value: "{{.NEW_RELIC_API_KEY_PASSWORD}}"
         resources:
           requests:
             cpu: 100m

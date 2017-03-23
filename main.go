@@ -24,6 +24,8 @@ var (
 	CONSUL_URL            = os.Getenv("bamboo_CONSUL_URL")
 	CONSUL_USERNAME       = os.Getenv("bamboo_CONSUL_USERNAME")
 	NEW_RELIC_LICENSE_KEY = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
+    NEW_RELIC_API_URL     = os.Getenv("bamboo_NEW_RELIC_API_URL")
+    NEW_RELIC_API_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")
 	ssh_key               = os.Getenv("ssh_key")
 	git_repo              = os.Getenv("git_repo")
 
