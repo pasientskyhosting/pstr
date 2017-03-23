@@ -1,15 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	//"os"
 	"text/template"
 )
 
 func createService(AppObj App) {
-	fp := CreateFH(O_OUTPUT + "/service.yaml")
-	fmt.Printf("# Service for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+	log.Printf("# Service for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+	fp := CreateFH("service.yaml")
+	defer fp.Close()
 	values := &Servicetmpl{
 		Application_name: application_name,
 		Namespace:        deploy_namespace,
@@ -21,7 +20,7 @@ func createService(AppObj App) {
 	err := t.Execute(fp, values)
 
 	if err != nil {
-		log.Fatalf("template execution: %s", err)
+		log.Fatalf("ERROR: template execution: %s", err)
 	}
 	fp.Close()
 }

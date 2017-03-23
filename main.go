@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"strings"
 )
 
@@ -15,8 +16,6 @@ var (
 	// Variables gotten from Environment
 	bamboo_buildNumber    = os.Getenv("bamboo_buildNumber")
 	bamboo_deploy_release = os.Getenv("bamboo_deploy_release")
-
-	//var build_id = os.Getenv("build_id")
 	cluster_ip                 = os.Getenv("cluster_ip")
 	CONSUL_APPLICATION         = os.Getenv("bamboo_CONSUL_APPLICATION")
 	CONSUL_ENVIRONMENT         = os.Getenv("bamboo_CONSUL_ENVIRONMENT")
@@ -57,18 +56,13 @@ func init() {
 	flag.StringVar(&deploy_namespace, "namespace", "", "namespace for deployment")
 	flag.StringVar(&O_LIMIT, "limit", "", "Limit the run to certain app name")
 	flag.StringVar(&O_FILENAME, "file", "serviceDefinition.json", "Filename to parse")
-	flag.StringVar(&O_OUTPUT, "output", "", "Output folder")
+	flag.StringVar(&O_OUTPUT, "output", "./", "Output folder")
 	var D_HOSTNAMES = flag.String("hostname", "", "Hostnames for ingress. comma separated")
 	flag.Parse()
-	hostnames = strings.Split(*D_HOSTNAMES, ",")
 
+	hostnames = strings.Split(*D_HOSTNAMES, ",")
 	if build_id == "" || deploy_namespace == "" {
-		//if deploy_build == "" || deploy_namespace == "" || *D_HOSTNAMES == "" {
-		println(deploy_build)
-		println(deploy_namespace)
-		println(hostnames)
-		log.Fatal("Missing CMD line options build, or namespace")
-		os.Exit(1)
+		log.Fatalf("Missing CMD line options build (\"%s\"), or namespace (\"%s\")", build_id, deploy_namespace)
 	}
 
 	if M_ALL {
@@ -81,16 +75,12 @@ func init() {
 }
 
 func CreateFH(Filename string) (fp *os.File) {
-	var err error
-	if O_OUTPUT != "" {
-		fp, err = os.OpenFile(Filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	//var err error
+		PFilename := fmt.Sprintf("%s/%s", path.Clean(O_OUTPUT), Filename)
+		fp, err := os.OpenFile(PFilename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 		if err != nil {
-			log.Println("create file: ", err)
-			os.Exit(1)
+			log.Fatalf("ERROR: create file: ", err)
 		}
-	} else {
-		fp = os.Stdout
-	}
 	return fp
 }
 
@@ -107,22 +97,21 @@ func Check_if_limit(AppObj App) bool {
 }
 
 func main() {
-	file, e := ioutil.ReadFile(O_FILENAME)
-	if e != nil {
-		fmt.Fprintf(os.Stderr, "File error: %v\n", e)
-		os.Exit(1)
+	file, err := ioutil.ReadFile(O_FILENAME)
+	if err != nil {
+		log.Fatalf("ERROR: File error: %v\n", err)
 	}
+
 	//Get the application name from Json object
 	application_name = gjson.GetBytes(file, "application").Str
 
-	value := gjson.GetBytes(file, "services")
+	Services := gjson.GetBytes(file, "services")
 
-	if value.Index == 0 {
-		fmt.Fprint(os.Stderr, "Json decode error, no services found\n")
-		os.Exit(1)
+	if Services.Index == 0 {
+		log.Fatal("ERROR: Json decode error, no services found\n")
 	}
 
-	value.ForEach(func(key, value gjson.Result) bool {
+	Services.ForEach(func(key, value gjson.Result) bool {
 		var AppObj App
 		err := json.Unmarshal([]byte(value.String()), &AppObj)
 		if err != nil {

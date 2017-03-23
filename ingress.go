@@ -1,16 +1,15 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"os"
 	"text/template"
 )
 
 func createIngress(AppObj App) {
 	if AppObj.Ports.External.HTTP > 0 {
-		fp := CreateFH(O_OUTPUT + "/ingress.yaml")
-		fmt.Printf("# Ingress for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+		log.Printf("# Ingress for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+		fp := CreateFH("ingress.yaml")
+		defer fp.Close()
 		values := &Ingresstmpl{
 			Application_name: application_name,
 			Namespace:        deploy_namespace,
@@ -23,11 +22,11 @@ func createIngress(AppObj App) {
 		err := t.Execute(fp, values)
 
 		if err != nil {
-			log.Fatalf("template execution: %s", err)
+			log.Fatalf("ERROR: template execution: %s", err)
 		}
 		fp.Close()
 	} else {
-		fmt.Fprintf(os.Stderr, "# %s-%s has no external port, Skipping Ingress\n", application_name, AppObj.Name)
+		log.Printf("# %s-%s has no external port, Skipping Ingress\n", application_name, AppObj.Name)
 	}
 
 }
