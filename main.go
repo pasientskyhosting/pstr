@@ -18,12 +18,12 @@ var (
 
 	//var build_id = os.Getenv("build_id")
 	cluster_ip            = os.Getenv("cluster_ip")
-	CONSUL_APPLICATION    = os.Getenv("CONSUL_APPLICATION")
-	CONSUL_ENVIRONMENT    = os.Getenv("CONSUL_ENVIRONMENT")
-	CONSUL_PASSWORD       = os.Getenv("CONSUL_PASSWORD")
-	CONSUL_URL            = os.Getenv("CONSUL_URL")
-	CONSUL_USERNAME       = os.Getenv("CONSUL_USERNAME")
-	NEW_RELIC_LICENSE_KEY = os.Getenv("NEW_RELIC_LICENSE_KEY")
+	CONSUL_APPLICATION    = os.Getenv("bamboo_CONSUL_APPLICATION")
+	CONSUL_ENVIRONMENT    = os.Getenv("bamboo_CONSUL_ENVIRONMENT")
+	CONSUL_PASSWORD       = os.Getenv("bamboo_CONSUL_PASSWORD")
+	CONSUL_URL            = os.Getenv("bamboo_CONSUL_URL")
+	CONSUL_USERNAME       = os.Getenv("bamboo_CONSUL_USERNAME")
+	NEW_RELIC_LICENSE_KEY = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
 	ssh_key               = os.Getenv("ssh_key")
 	git_repo              = os.Getenv("git_repo")
 
@@ -38,6 +38,7 @@ var (
 	M_DEPLOY         bool
 	M_INGRESS        bool
 	M_SERVICE        bool
+    M_GERNICSERVICE  bool
 	O_LIMIT          string
 	O_FILENAME       string
 	O_OUTPUT         string
@@ -49,6 +50,7 @@ func init() {
 	flag.BoolVar(&M_DEPLOY, "deploy", false, "Create deployments")
 	flag.BoolVar(&M_INGRESS, "ingress", false, "Create ingress rules")
 	flag.BoolVar(&M_SERVICE, "service", false, "Create services")
+    flag.BoolVar(&M_GERNICSERVICE, "genericservice", false, "Create generic services")
 	flag.StringVar(&build_id, "build_id", "", "build_id from bamboo")
 	flag.StringVar(&deploy_namespace, "namespace", "", "namespace for deployment")
 	flag.StringVar(&O_LIMIT, "limit", "", "Limit the run to certain app name")
@@ -70,6 +72,7 @@ func init() {
 	if M_ALL {
 		M_DEPLOY = true
 		M_SERVICE = true
+        M_GERNICSERVICE = true
 		M_AUTOSCALER = true
 		M_INGRESS = true
 	}
@@ -124,6 +127,9 @@ func main() {
 	f_service := CreateFH(O_OUTPUT + "/service.yaml")
 	defer f_service.Close()
 
+    f_genericservice := CreateFH(O_OUTPUT + "/service-generic.yaml")
+	defer f_service.Close()
+
 	f_autoscaler := CreateFH(O_OUTPUT + "/autoscaler.yaml")
 	defer f_autoscaler.Close()
 
@@ -143,6 +149,9 @@ func main() {
 			if M_SERVICE {
 				createService(f_service, AppObj)
 			}
+            if M_GERNICSERVICE {
+				createGenericService(f_genericservice, AppObj)
+			}
 			if M_AUTOSCALER {
 				createAutoScaler(f_autoscaler, AppObj)
 			}
@@ -155,6 +164,7 @@ func main() {
 
 	f_deploy.Close()
 	f_service.Close()
+    f_genericservice.Close()
 	f_autoscaler.Close()
 	f_ingress.Close()
 }

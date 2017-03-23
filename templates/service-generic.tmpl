@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{.Application_name}}-{{.Deploy.Name}}"
+  namespace: {{.Namespace}}
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: {{.Deploy.Ports.Internal.HTTP}}
+  selector:
+    application: "{{.Application_name}}-{{.Deploy.Name}}"
+    build: "{{.Build_id}}"
+  sessionAffinity: None
+---
