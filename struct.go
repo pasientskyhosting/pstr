@@ -70,21 +70,21 @@ type Servicetmpl struct {
 }
 
 type Deploytmpl struct {
-	Application_name      string
-	Bamboo_deploy_release string
-	Build_id              string
-	Build_nr              string
-	CONSUL_APPLICATION    string
-	CONSUL_ENVIRONMENT    string
-	CONSUL_PASSWORD       string
-	CONSUL_URL            string
-	CONSUL_USERNAME       string
-	Deploy                App
-	Deploy_name           string
-	Git_repo              string
-	Namespace             string
-	NEW_RELIC_LICENSE_KEY string
-    NEW_RELIC_API_URL     string
-    NEW_RELIC_API_KEY_PASSWORD string
-	Ssh_key               string
+	Application_name           string
+	Bamboo_deploy_release      string
+	Build_id                   string
+	Build_nr                   string
+	CONSUL_APPLICATION         string
+	CONSUL_ENVIRONMENT         string
+	CONSUL_PASSWORD            string
+	CONSUL_URL                 string
+	CONSUL_USERNAME            string
+	Deploy                     App
+	Deploy_name                string
+	Git_repo                   string
+	Namespace                  string
+	NEW_RELIC_LICENSE_KEY      string
+	NEW_RELIC_API_URL          string
+	NEW_RELIC_API_KEY_PASSWORD string
+	Ssh_key                    string
 }

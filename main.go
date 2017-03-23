@@ -17,17 +17,17 @@ var (
 	bamboo_deploy_release = os.Getenv("bamboo_deploy_release")
 
 	//var build_id = os.Getenv("build_id")
-	cluster_ip            = os.Getenv("cluster_ip")
-	CONSUL_APPLICATION    = os.Getenv("bamboo_CONSUL_APPLICATION")
-	CONSUL_ENVIRONMENT    = os.Getenv("bamboo_CONSUL_ENVIRONMENT")
-	CONSUL_PASSWORD       = os.Getenv("bamboo_CONSUL_PASSWORD")
-	CONSUL_URL            = os.Getenv("bamboo_CONSUL_URL")
-	CONSUL_USERNAME       = os.Getenv("bamboo_CONSUL_USERNAME")
-	NEW_RELIC_LICENSE_KEY = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
-    NEW_RELIC_API_URL     = os.Getenv("bamboo_NEW_RELIC_API_URL")
-    NEW_RELIC_API_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")
-	ssh_key               = os.Getenv("ssh_key")
-	git_repo              = os.Getenv("git_repo")
+	cluster_ip                 = os.Getenv("cluster_ip")
+	CONSUL_APPLICATION         = os.Getenv("bamboo_CONSUL_APPLICATION")
+	CONSUL_ENVIRONMENT         = os.Getenv("bamboo_CONSUL_ENVIRONMENT")
+	CONSUL_PASSWORD            = os.Getenv("bamboo_CONSUL_PASSWORD")
+	CONSUL_URL                 = os.Getenv("bamboo_CONSUL_URL")
+	CONSUL_USERNAME            = os.Getenv("bamboo_CONSUL_USERNAME")
+	NEW_RELIC_LICENSE_KEY      = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
+	NEW_RELIC_API_URL          = os.Getenv("bamboo_NEW_RELIC_API_URL")
+	NEW_RELIC_API_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")
+	ssh_key                    = os.Getenv("ssh_key")
+	git_repo                   = os.Getenv("git_repo")
 
 	// Static configs
 	deploy_build     string
@@ -40,7 +40,7 @@ var (
 	M_DEPLOY         bool
 	M_INGRESS        bool
 	M_SERVICE        bool
-    M_GERNICSERVICE  bool
+	M_GERNICSERVICE  bool
 	O_LIMIT          string
 	O_FILENAME       string
 	O_OUTPUT         string
@@ -52,7 +52,7 @@ func init() {
 	flag.BoolVar(&M_DEPLOY, "deploy", false, "Create deployments")
 	flag.BoolVar(&M_INGRESS, "ingress", false, "Create ingress rules")
 	flag.BoolVar(&M_SERVICE, "service", false, "Create services")
-    flag.BoolVar(&M_GERNICSERVICE, "genericservice", false, "Create generic services")
+	flag.BoolVar(&M_GERNICSERVICE, "genericservice", false, "Create generic services")
 	flag.StringVar(&build_id, "build_id", "", "build_id from bamboo")
 	flag.StringVar(&deploy_namespace, "namespace", "", "namespace for deployment")
 	flag.StringVar(&O_LIMIT, "limit", "", "Limit the run to certain app name")
@@ -74,7 +74,7 @@ func init() {
 	if M_ALL {
 		M_DEPLOY = true
 		M_SERVICE = true
-        M_GERNICSERVICE = true
+		M_GERNICSERVICE = true
 		M_AUTOSCALER = true
 		M_INGRESS = true
 	}
@@ -83,7 +83,6 @@ func init() {
 func CreateFH(Filename string) (fp *os.File) {
 	var err error
 	if O_OUTPUT != "" {
-		os.Remove(Filename)
 		fp, err = os.OpenFile(Filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 		if err != nil {
 			log.Println("create file: ", err)
@@ -123,21 +122,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	f_deploy := CreateFH(O_OUTPUT + "/deploy.yaml")
-	defer f_deploy.Close()
-
-	f_service := CreateFH(O_OUTPUT + "/service.yaml")
-	defer f_service.Close()
-
-    f_genericservice := CreateFH(O_OUTPUT + "/service-generic.yaml")
-	defer f_service.Close()
-
-	f_autoscaler := CreateFH(O_OUTPUT + "/autoscaler.yaml")
-	defer f_autoscaler.Close()
-
-	f_ingress := CreateFH(O_OUTPUT + "/ingress.yaml")
-	defer f_ingress.Close()
-
 	value.ForEach(func(key, value gjson.Result) bool {
 		var AppObj App
 		err := json.Unmarshal([]byte(value.String()), &AppObj)
@@ -146,27 +130,21 @@ func main() {
 			os.Exit(1)
 		} else if Check_if_limit(AppObj) {
 			if M_DEPLOY {
-				createDeploy(f_deploy, AppObj)
+				createDeploy(AppObj)
 			}
 			if M_SERVICE {
-				createService(f_service, AppObj)
+				createService(AppObj)
 			}
-            if M_GERNICSERVICE {
-				createGenericService(f_genericservice, AppObj)
+			if M_GERNICSERVICE {
+				createGenericService(AppObj)
 			}
 			if M_AUTOSCALER {
-				createAutoScaler(f_autoscaler, AppObj)
+				createAutoScaler(AppObj)
 			}
 			if M_INGRESS {
-				createIngress(f_ingress, AppObj)
+				createIngress(AppObj)
 			}
 		}
 		return true // keep iterating
 	})
-
-	f_deploy.Close()
-	f_service.Close()
-    f_genericservice.Close()
-	f_autoscaler.Close()
-	f_ingress.Close()
 }

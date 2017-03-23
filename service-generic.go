@@ -3,11 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
-	"os"
+	//"os"
 	"text/template"
 )
 
-func createGenericService(fp *os.File, AppObj App) {
+func createGenericService(AppObj App) {
+	fp := CreateFH(O_OUTPUT + "/service-generic.yaml")
 	fmt.Printf("# Generic Service for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 	values := &Servicetmpl{
 		Application_name: application_name,
@@ -21,6 +22,6 @@ func createGenericService(fp *os.File, AppObj App) {
 
 	if err != nil {
 		log.Fatalf("template execution: %s", err)
-		os.Exit(1)
 	}
+	fp.Close()
 }

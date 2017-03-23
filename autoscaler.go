@@ -3,11 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
-	"os"
+	//"os"
 	"text/template"
 )
 
-func createAutoScaler(fp *os.File, AppObj App) {
+func createAutoScaler(AppObj App) {
+	fp := CreateFH(O_OUTPUT + "/autoscaler.yaml")
 	fmt.Printf("# AutoScaler for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 	values := &Autoscalertmpl{
 		Deploy_name: application_name + "-" + AppObj.Name + "-" + build_id,
@@ -19,6 +20,6 @@ func createAutoScaler(fp *os.File, AppObj App) {
 
 	if err != nil {
 		log.Fatalf("template execution: %s", err)
-		os.Exit(1)
 	}
+	fp.Close()
 }

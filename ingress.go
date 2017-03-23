@@ -7,8 +7,9 @@ import (
 	"text/template"
 )
 
-func createIngress(fp *os.File, AppObj App) {
+func createIngress(AppObj App) {
 	if AppObj.Ports.External.HTTP > 0 {
+		fp := CreateFH(O_OUTPUT + "/ingress.yaml")
 		fmt.Printf("# Ingress for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 		values := &Ingresstmpl{
 			Application_name: application_name,
@@ -23,10 +24,10 @@ func createIngress(fp *os.File, AppObj App) {
 
 		if err != nil {
 			log.Fatalf("template execution: %s", err)
-			os.Exit(1)
 		}
-
+		fp.Close()
 	} else {
 		fmt.Fprintf(os.Stderr, "# %s-%s has no external port, Skipping Ingress\n", application_name, AppObj.Name)
 	}
+
 }
