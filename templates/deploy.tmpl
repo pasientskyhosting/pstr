@@ -43,26 +43,20 @@ spec:
             exec:
               command: [{{ range $index,$cmd := .Deploy.PreStop.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end}}
         readinessProbe:
-          {{if .Deploy.Readiness.Exec}}exec:
-            command: [{{ range $index,$cmd := .Deploy.Readiness.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]
-          {{else}}
           httpGet:
             path: {{.Deploy.Readiness.Path}}
             port: 80
-            scheme: HTTP{{end}}
+            scheme: HTTP
           initialDelaySeconds: {{.Deploy.Readiness.InitialDelaySeconds}}
           periodSeconds: {{.Deploy.Readiness.PeriodSeconds}}
           failureThreshold: {{.Deploy.Readiness.FailureThreshold}}
           timeoutSeconds: {{.Deploy.Readiness.TimeoutSeconds}}
           successThreshold: {{.Deploy.Readiness.SuccessThreshold}}
         livenessProbe:
-          {{if .Deploy.Health.Exec}}exec:
-            command: [{{ range $index,$cmd := .Deploy.Health.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]
-          {{else}}
           httpGet:
             path: {{.Deploy.Health.Path}}
             port: 80
-            scheme: HTTP{{end}}
+            scheme: HTTP
           initialDelaySeconds: {{.Deploy.Health.InitialDelaySeconds}}
           periodSeconds: {{.Deploy.Health.PeriodSeconds}}
           failureThreshold: {{.Deploy.Health.FailureThreshold}}
