@@ -1,15 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	//"os"
 	"text/template"
 )
 
 func createGenericService(AppObj App) {
-	fp := CreateFH(O_OUTPUT + "/service-generic.yaml")
-	fmt.Printf("# Generic Service for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+	log.Printf("# Generic Service for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+	fp := CreateFH("service-generic.yaml")
+	defer fp.Close()
 	values := &Servicetmpl{
 		Application_name: application_name,
 		Namespace:        deploy_namespace,

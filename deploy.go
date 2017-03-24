@@ -1,15 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	//"os"
 	"text/template"
 )
 
 func createDeploy(AppObj App) {
-	fp := CreateFH(O_OUTPUT + "/deploy.yaml")
-	fmt.Printf("# Deployment for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+	log.Printf("# Deployment for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+	fp := CreateFH("deploy.yaml")
+	defer fp.Close()
 	values := &Deploytmpl{
 		Application_name:           application_name,
 		Bamboo_deploy_release:      bamboo_deploy_release,
@@ -34,7 +33,7 @@ func createDeploy(AppObj App) {
 	t := template.Must(template.ParseFiles("templates/deploy.tmpl"))
 	err := t.Execute(fp, values)
 	if err != nil {
-		log.Fatalf("template execution: %s", err)
+		log.Fatalf("ERROR: template execution: %s", err)
 	}
 	fp.Close()
 }
