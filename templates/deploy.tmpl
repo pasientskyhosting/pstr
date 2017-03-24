@@ -43,7 +43,7 @@ spec:
             exec:
               command: [{{ range $index,$cmd := .Deploy.PreStop.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end}}
         readinessProbe:
-          {{if .Deploy.Readiness.Path -}}httpGet:
+          {{if .Deploy.Readiness.Path}}httpGet:
             path: {{.Deploy.Readiness.Path}}
             port: 80
             scheme: HTTP
@@ -55,7 +55,7 @@ spec:
           timeoutSeconds: {{.Deploy.Readiness.TimeoutSeconds}}
           successThreshold: {{.Deploy.Readiness.SuccessThreshold}}
         livenessProbe:
-          {{if .Deploy.Health.Path -}}httpGet:
+          {{if .Deploy.Health.Path}}httpGet:
             path: {{.Deploy.Health.Path}}
             port: 80
             scheme: HTTP
