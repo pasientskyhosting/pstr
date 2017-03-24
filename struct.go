@@ -78,6 +78,7 @@ type Deploytmpl struct {
 	CONSUL_ENVIRONMENT         string
 	CONSUL_PASSWORD            string
 	CONSUL_URL                 string
+    CONSUL_FULL_URL            string
 	CONSUL_USERNAME            string
 	Deploy                     App
 	Deploy_name                string

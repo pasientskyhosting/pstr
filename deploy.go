@@ -18,6 +18,7 @@ func createDeploy(AppObj App) {
 		CONSUL_APPLICATION:         CONSUL_APPLICATION,
 		CONSUL_PASSWORD:            CONSUL_PASSWORD,
 		CONSUL_URL:                 CONSUL_URL,
+        CONSUL_FULL_URL:            CONSUL_FULL_URL,
 		CONSUL_USERNAME:            CONSUL_USERNAME,
 		CONSUL_ENVIRONMENT:         CONSUL_ENVIRONMENT,
 		Deploy:                     AppObj,

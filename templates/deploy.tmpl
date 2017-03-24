@@ -63,6 +63,8 @@ spec:
           timeoutSeconds: {{.Deploy.Readiness.TimeoutSeconds}}
           successThreshold: 1
         env:
+          - name: PS_CONSUL_FULL_URL
+            value: "{{.CONSUL_FULL_URL}}"
           - name: PS_CONSUL_URL
             value: "{{.CONSUL_URL}}"
           - name: PS_CONSUL_USERNAME
