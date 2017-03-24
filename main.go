@@ -22,7 +22,7 @@ var (
 	CONSUL_PASSWORD            = os.Getenv("bamboo_CONSUL_PASSWORD")
 	CONSUL_URL                 = os.Getenv("bamboo_CONSUL_URL")
 	CONSUL_USERNAME            = os.Getenv("bamboo_CONSUL_USERNAME")
-    CONSUL_FULL_URL            = "https://" + CONSUL_USERNAME + ":" + CONSUL_PASSWORD + "@" + CONSUL_URL
+    CONSUL_FULL_URL            = "https://" + CONSUL_USERNAME + ":" + CONSUL_PASSWORD + "@" + strings.Replace(CONSUL_URL, "https://", "", -1)
 	NEW_RELIC_LICENSE_KEY      = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
 	NEW_RELIC_API_URL          = os.Getenv("bamboo_NEW_RELIC_API_URL")
 	NEW_RELIC_API_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")
