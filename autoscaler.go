@@ -11,9 +11,9 @@ func createAutoScaler(AppObj App) {
 	fp := CreateFH("autoscaler.yaml")
 	defer fp.Close()
 	values := &Autoscalertmpl{
+		Deploy:      AppObj,
 		Deploy_name: fmt.Sprintf("%s-%s-%s", application_name, AppObj.Name, build_id),
 		Namespace:   deploy_namespace,
-		Deploy:      AppObj,
 	}
 	t := template.Must(template.ParseFiles("templates/autoscaler.tmpl"))
 	err := t.Execute(fp, values)

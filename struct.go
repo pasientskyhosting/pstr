@@ -57,10 +57,10 @@ type App struct {
 
 type Ingresstmpl struct {
 	Application_name string
-	Deploy           App
-	Namespace        string
-	Hostnames        []string
 	Build_id         string
+	Deploy           App
+	Hostnames        []string
+	Namespace        string
 }
 
 type Autoscalertmpl struct {
@@ -71,10 +71,10 @@ type Autoscalertmpl struct {
 
 type Servicetmpl struct {
 	Application_name string
-	Namespace        string
-	Cluster_ip       string
 	Build_id         string
+	Cluster_ip       string
 	Deploy           App
+	Namespace        string
 }
 
 type Deploytmpl struct {
@@ -84,16 +84,16 @@ type Deploytmpl struct {
 	Build_nr                   string
 	CONSUL_APPLICATION         string
 	CONSUL_ENVIRONMENT         string
+	CONSUL_FULL_URL            *url.URL
 	CONSUL_PASSWORD            string
 	CONSUL_URL                 *url.URL
-	CONSUL_FULL_URL            *url.URL
 	CONSUL_USERNAME            string
 	Deploy                     App
 	Deploy_name                string
 	Git_repo                   *url.URL
 	Namespace                  string
-	NEW_RELIC_LICENSE_KEY      string
-	NEW_RELIC_API_URL          *url.URL
 	NEW_RELIC_API_KEY_PASSWORD string
+	NEW_RELIC_API_URL          *url.URL
+	NEW_RELIC_LICENSE_KEY      string
 	Ssh_key                    string
 }

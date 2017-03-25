@@ -12,10 +12,10 @@ func createIngress(AppObj App) {
 		defer fp.Close()
 		values := &Ingresstmpl{
 			Application_name: application_name,
-			Namespace:        deploy_namespace,
+			Build_id:         build_id,
 			Deploy:           AppObj,
 			Hostnames:        hostnames,
-			Build_id:         build_id,
+			Namespace:        deploy_namespace,
 		}
 
 		t := template.Must(template.ParseFiles("templates/ingress.tmpl"))

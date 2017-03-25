@@ -11,9 +11,9 @@ func createService(AppObj App) {
 	defer fp.Close()
 	values := &Servicetmpl{
 		Application_name: application_name,
-		Namespace:        deploy_namespace,
 		Build_id:         build_id,
 		Deploy:           AppObj,
+		Namespace:        deploy_namespace,
 	}
 
 	t := template.Must(template.ParseFiles("templates/service.tmpl"))
