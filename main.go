@@ -22,7 +22,6 @@ var (
 	CONSUL_ENVIRONMENT         = os.Getenv("bamboo_CONSUL_ENVIRONMENT")
 	CONSUL_PASSWORD            = os.Getenv("bamboo_CONSUL_PASSWORD")
 	CONSUL_USERNAME            = os.Getenv("bamboo_CONSUL_USERNAME")
-	git_repo                   = os.Getenv("git_repo")
 	NEW_RELIC_API_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")
 	NEW_RELIC_LICENSE_KEY      = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
 	ssh_key                    = os.Getenv("ssh_key")
@@ -34,6 +33,7 @@ var (
 	CONSUL_URL        *url.URL
 	deploy_build      string
 	deploy_namespace  string
+	git_repo          *url.URL
 	hostnames         []string
 	M_ALL             bool
 	M_AUTOSCALER      bool
@@ -61,6 +61,9 @@ func init() {
 	checkErr(err)
 	CONSUL_FULL_URL, err = url.Parse(fmt.Sprintf("%s://%s:%s@%s/", CONSUL_URL.Scheme, CONSUL_USERNAME, CONSUL_PASSWORD, CONSUL_URL.Host))
 	checkErr(err)
+	git_repo, err = url.Parse(os.Getenv("git_repo"))
+	checkErr(err)
+	_ = git_repo
 	_ = NEW_RELIC_API_URL
 	_ = CONSUL_FULL_URL
 	flag.BoolVar(&M_ALL, "all", false, "Outputs deploymen, service, autoscaler and ingress")

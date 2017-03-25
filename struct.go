@@ -90,7 +90,7 @@ type Deploytmpl struct {
 	CONSUL_USERNAME            string
 	Deploy                     App
 	Deploy_name                string
-	Git_repo                   string
+	Git_repo                   *url.URL
 	Namespace                  string
 	NEW_RELIC_LICENSE_KEY      string
 	NEW_RELIC_API_URL          *url.URL
