@@ -60,7 +60,8 @@ func checkErr(err error) {
 }
 
 func init() {
-	CONSUL_URL, err := url.Parse(bamboo_CONSUL_URL)
+	var err error
+	CONSUL_URL, err = url.Parse(bamboo_CONSUL_URL)
 	NEW_RELIC_API_URL, err = url.Parse(bamboo_NEW_RELIC_API_URL)
 	if CONSUL_URL.Host != "" {
 		CONSUL_FULL_URL, err = url.Parse(fmt.Sprintf("%s://%s:%s@%s/", CONSUL_URL.Scheme, CONSUL_USERNAME, CONSUL_PASSWORD, CONSUL_URL.Host))
