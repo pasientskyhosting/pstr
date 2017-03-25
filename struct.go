@@ -77,6 +77,12 @@ type Servicetmpl struct {
 	Namespace        string
 }
 
+type Clinictmpl struct {
+	Clinic_name     string
+	Clinic_hostname string
+	Namespace       string
+}
+
 type Deploytmpl struct {
 	Application_name           string
 	Bamboo_deploy_release      string

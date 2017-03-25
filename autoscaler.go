@@ -7,7 +7,7 @@ import (
 )
 
 func createAutoScaler(AppObj App) {
-	log.Printf("# AutoScaler for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+	log.Printf("AutoScaler for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 	fp := CreateFH("autoscaler.yaml")
 	defer fp.Close()
 	values := &Autoscalertmpl{

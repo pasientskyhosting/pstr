@@ -6,7 +6,7 @@ import (
 )
 
 func createService(AppObj App) {
-	log.Printf("# Service for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+	log.Printf("Service for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 	fp := CreateFH("service.yaml")
 	defer fp.Close()
 	values := &Servicetmpl{

@@ -6,7 +6,7 @@ import (
 )
 
 func createGenericService(AppObj App) {
-	log.Printf("# Generic Service for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+	log.Printf("Generic Service for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 	fp := CreateFH("service-generic.yaml")
 	defer fp.Close()
 	values := &Servicetmpl{

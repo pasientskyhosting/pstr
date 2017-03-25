@@ -7,7 +7,7 @@ import (
 
 func createIngress(AppObj App) {
 	if AppObj.Ports.External.HTTP > 0 {
-		log.Printf("# Ingress for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+		log.Printf("Ingress for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 		fp := CreateFH("ingress.yaml")
 		defer fp.Close()
 		values := &Ingresstmpl{
@@ -26,7 +26,7 @@ func createIngress(AppObj App) {
 		}
 		fp.Close()
 	} else {
-		log.Printf("# %s-%s has no external port, Skipping Ingress\n", application_name, AppObj.Name)
+		log.Printf("%s-%s has no external port, Skipping Ingress\n", application_name, AppObj.Name)
 	}
 
 }

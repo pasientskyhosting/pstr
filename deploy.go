@@ -7,7 +7,7 @@ import (
 )
 
 func createDeploy(AppObj App) {
-	log.Printf("# Deployment for %s-%s-%s\n", application_name, AppObj.Name, build_id)
+	log.Printf("Deployment for %s-%s-%s\n", application_name, AppObj.Name, build_id)
 	fp := CreateFH("deploy.yaml")
 	defer fp.Close()
 	values := &Deploytmpl{
