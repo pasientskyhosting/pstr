@@ -21,7 +21,10 @@ type App struct {
 		} `json:"internal"`
 	} `json:"ports"`
 	Readiness struct {
-		Path                string `json:"path"`
+		Path string `json:"path,omitempty"`
+		Exec struct {
+			Command []string `json:"command,omitempty"`
+		} `json:"exec,omitempty"`
 		InitialDelaySeconds int    `json:"initialDelaySeconds"`
 		PeriodSeconds       int    `json:"periodSeconds"`
 		FailureThreshold    int    `json:"failureThreshold"`
@@ -29,7 +32,10 @@ type App struct {
 		SuccessThreshold    int    `json:"successThreshold"`
 	} `json:"readiness"`
 	Health struct {
-		Path                string `json:"path"`
+		Path string `json:"path,omitempty"`
+		Exec struct {
+			Command []string `json:"command,omitempty"`
+		} `json:"exec,omitempty"`
 		InitialDelaySeconds int    `json:"initialDelaySeconds"`
 		PeriodSeconds       int    `json:"periodSeconds"`
 		FailureThreshold    int    `json:"failureThreshold"`
