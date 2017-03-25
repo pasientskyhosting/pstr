@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"text/template"
 )
@@ -10,7 +11,7 @@ func createAutoScaler(AppObj App) {
 	fp := CreateFH("autoscaler.yaml")
 	defer fp.Close()
 	values := &Autoscalertmpl{
-		Deploy_name: application_name + "-" + AppObj.Name + "-" + build_id,
+		Deploy_name: fmt.Sprintf("%s-%s-%s", application_name, AppObj.Name, build_id),
 		Namespace:   deploy_namespace,
 		Deploy:      AppObj,
 	}

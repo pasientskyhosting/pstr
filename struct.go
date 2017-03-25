@@ -1,5 +1,7 @@
 package main
 
+import "net/url"
+
 type App struct {
 	Name        string `json:"name"`
 	Group       string `json:"group"`
@@ -25,22 +27,22 @@ type App struct {
 		Exec struct {
 			Command []string `json:"command,omitempty"`
 		} `json:"exec,omitempty"`
-		InitialDelaySeconds int    `json:"initialDelaySeconds"`
-		PeriodSeconds       int    `json:"periodSeconds"`
-		FailureThreshold    int    `json:"failureThreshold"`
-		TimeoutSeconds      int    `json:"timeoutSeconds"`
-		SuccessThreshold    int    `json:"successThreshold"`
+		InitialDelaySeconds int `json:"initialDelaySeconds"`
+		PeriodSeconds       int `json:"periodSeconds"`
+		FailureThreshold    int `json:"failureThreshold"`
+		TimeoutSeconds      int `json:"timeoutSeconds"`
+		SuccessThreshold    int `json:"successThreshold"`
 	} `json:"readiness"`
 	Health struct {
 		Path string `json:"path,omitempty"`
 		Exec struct {
 			Command []string `json:"command,omitempty"`
 		} `json:"exec,omitempty"`
-		InitialDelaySeconds int    `json:"initialDelaySeconds"`
-		PeriodSeconds       int    `json:"periodSeconds"`
-		FailureThreshold    int    `json:"failureThreshold"`
-		TimeoutSeconds      int    `json:"timeoutSeconds"`
-		SuccessThreshold    int    `json:"successThreshold"`
+		InitialDelaySeconds int `json:"initialDelaySeconds"`
+		PeriodSeconds       int `json:"periodSeconds"`
+		FailureThreshold    int `json:"failureThreshold"`
+		TimeoutSeconds      int `json:"timeoutSeconds"`
+		SuccessThreshold    int `json:"successThreshold"`
 	} `json:"health"`
 	PreStop struct {
 		HTTPGet struct {
@@ -83,15 +85,15 @@ type Deploytmpl struct {
 	CONSUL_APPLICATION         string
 	CONSUL_ENVIRONMENT         string
 	CONSUL_PASSWORD            string
-	CONSUL_URL                 string
-    CONSUL_FULL_URL            string
+	CONSUL_URL                 *url.URL
+	CONSUL_FULL_URL            *url.URL
 	CONSUL_USERNAME            string
 	Deploy                     App
 	Deploy_name                string
 	Git_repo                   string
 	Namespace                  string
 	NEW_RELIC_LICENSE_KEY      string
-	NEW_RELIC_API_URL          string
+	NEW_RELIC_API_URL          *url.URL
 	NEW_RELIC_API_KEY_PASSWORD string
 	Ssh_key                    string
 }

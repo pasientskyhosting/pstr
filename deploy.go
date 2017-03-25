@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"text/template"
 )
@@ -17,11 +18,11 @@ func createDeploy(AppObj App) {
 		CONSUL_APPLICATION:         CONSUL_APPLICATION,
 		CONSUL_PASSWORD:            CONSUL_PASSWORD,
 		CONSUL_URL:                 CONSUL_URL,
-        CONSUL_FULL_URL:            CONSUL_FULL_URL,
+		CONSUL_FULL_URL:            CONSUL_FULL_URL,
 		CONSUL_USERNAME:            CONSUL_USERNAME,
 		CONSUL_ENVIRONMENT:         CONSUL_ENVIRONMENT,
 		Deploy:                     AppObj,
-		Deploy_name:                application_name + "-" + AppObj.Name + "-" + build_id,
+		Deploy_name:                fmt.Sprintf("%s-%s-%s", application_name, AppObj.Name, build_id),
 		Git_repo:                   git_repo,
 		Namespace:                  deploy_namespace,
 		NEW_RELIC_LICENSE_KEY:      NEW_RELIC_LICENSE_KEY,

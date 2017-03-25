@@ -37,11 +37,21 @@ Path to where to write output YAML files.
 If not specified files will be written in the current folder
 
 
-**WARNING, If multiple services has Service.#.Ports.External.HTTP set this will generate multiple ingress rules with the same hostname if --limit is not used together with**
+**WARNING, If multiple services has Service.#.Ports.External.HTTP set this will generate multiple ingress rules with the same hostname if --limit is not used**
 
 
 ## notepad
-bamboo_deploy_release="34" bamboo_buildNumber="43d24" CONSUL_APPLICATION="consul_app" cluster_ip="127.0.0.1" CONSUL_ENVIRONMENT="consul_env" CONSUL_PASSWORD="consul_pass"  CONSUL_URL="http://consul" CONSUL_USERNAME="consul_user" git_repo="http://git.repo" ssh_key="rsa1234" NEW_RELIC_LICENSE_KEY="9876er54321" go run *.go  --build_id dfb1337 --namespace=hptest --all --hostname=test.domain.com,test2.another.com --file ./serviceDefinition.json --output ./out --limit app
-
-
-bamboo_deploy_release="34" bamboo_buildNumber="43d24" CONSUL_APPLICATION="consul_app" cluster_ip="127.0.0.1" CONSUL_ENVIRONMENT="consul_env" CONSUL_PASSWORD="consul_pass"  CONSUL_URL="http://consul" CONSUL_USERNAME="consul_user" git_repo="http://git.repo" ssh_key="rsa1234" NEW_RELIC_LICENSE_KEY="9876er54321" ./pstr --build_id dfb1337 --namespace=hptest --all --hostname=test.domain.com,test2.another.com --file ./serviceDefinition.json --output ./out --limit app
+bamboo_CONSUL_APPLICATION=consul_app1 \
+bamboo_CONSUL_ENVIRONMENT=consul_environment1 \
+bamboo_CONSUL_PASSWORD=consul_password \
+bamboo_CONSUL_URL=https://consul-host.ps.com \
+bamboo_CONSUL_USERNAME=consul_username \
+bamboo_NEW_RELIC_API_KEY_PASSWORD=NR_password \
+bamboo_NEW_RELIC_API_URL=https://newrelic.api.url/ \
+bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD=NR_license \
+bamboo_buildNumber=B12345 \
+bamboo_deploy_release=Bamboorelease1 \
+cluster_ip=127.0.0.1 \
+git_repo=https://git.com/psdev/arepo.git \
+ssh_key=fsdfosdhfjdsakhfkljsahfklhsa \
+go run *.go  --build_id dfb1337 --namespace=hptest --all --hostname=test.domain.com,test2.another.com --file ./serviceDefinition.json --output ./out

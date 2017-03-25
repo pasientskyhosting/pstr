@@ -7,6 +7,7 @@ import (
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"log"
+	"net/url"
 	"os"
 	"path"
 	"strings"
@@ -14,39 +15,54 @@ import (
 
 var (
 	// Variables gotten from Environment
-	bamboo_buildNumber    = os.Getenv("bamboo_buildNumber")
-	bamboo_deploy_release = os.Getenv("bamboo_deploy_release")
+	bamboo_buildNumber         = os.Getenv("bamboo_buildNumber")
+	bamboo_deploy_release      = os.Getenv("bamboo_deploy_release")
 	cluster_ip                 = os.Getenv("cluster_ip")
 	CONSUL_APPLICATION         = os.Getenv("bamboo_CONSUL_APPLICATION")
 	CONSUL_ENVIRONMENT         = os.Getenv("bamboo_CONSUL_ENVIRONMENT")
 	CONSUL_PASSWORD            = os.Getenv("bamboo_CONSUL_PASSWORD")
-	CONSUL_URL                 = os.Getenv("bamboo_CONSUL_URL")
 	CONSUL_USERNAME            = os.Getenv("bamboo_CONSUL_USERNAME")
-    CONSUL_FULL_URL            = "https://" + CONSUL_USERNAME + ":" + CONSUL_PASSWORD + "@" + strings.Replace(CONSUL_URL, "https://", "", -1)
-	NEW_RELIC_LICENSE_KEY      = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
-	NEW_RELIC_API_URL          = os.Getenv("bamboo_NEW_RELIC_API_URL")
-	NEW_RELIC_API_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")
-	ssh_key                    = os.Getenv("ssh_key")
 	git_repo                   = os.Getenv("git_repo")
+	NEW_RELIC_API_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")
+	NEW_RELIC_LICENSE_KEY      = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
+	ssh_key                    = os.Getenv("ssh_key")
 
 	// Static configs
-	deploy_build     string
-	application_name string
-	deploy_namespace string
-	build_id         string
-	hostnames        []string
-	M_ALL            bool
-	M_AUTOSCALER     bool
-	M_DEPLOY         bool
-	M_INGRESS        bool
-	M_SERVICE        bool
-	M_GERNICSERVICE  bool
-	O_LIMIT          string
-	O_FILENAME       string
-	O_OUTPUT         string
+	application_name  string
+	build_id          string
+	CONSUL_FULL_URL   *url.URL
+	CONSUL_URL        *url.URL
+	deploy_build      string
+	deploy_namespace  string
+	hostnames         []string
+	M_ALL             bool
+	M_AUTOSCALER      bool
+	M_DEPLOY          bool
+	M_GERNICSERVICE   bool
+	M_INGRESS         bool
+	M_SERVICE         bool
+	NEW_RELIC_API_URL *url.URL
+	O_FILENAME        string
+	O_LIMIT           string
+	O_OUTPUT          string
 )
 
+func checkErr(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func init() {
+	var err error
+	CONSUL_URL, err = url.Parse(os.Getenv("bamboo_CONSUL_URL"))
+	checkErr(err)
+	NEW_RELIC_API_URL, err = url.Parse(os.Getenv("bamboo_NEW_RELIC_API_URL"))
+	checkErr(err)
+	CONSUL_FULL_URL, err = url.Parse(fmt.Sprintf("%s://%s:%s@%s/", CONSUL_URL.Scheme, CONSUL_USERNAME, CONSUL_PASSWORD, CONSUL_URL.Host))
+	checkErr(err)
+	_ = NEW_RELIC_API_URL
+	_ = CONSUL_FULL_URL
 	flag.BoolVar(&M_ALL, "all", false, "Outputs deploymen, service, autoscaler and ingress")
 	flag.BoolVar(&M_AUTOSCALER, "autoscaler", false, "Create autoscaler")
 	flag.BoolVar(&M_DEPLOY, "deploy", false, "Create deployments")
@@ -77,11 +93,11 @@ func init() {
 
 func CreateFH(Filename string) (fp *os.File) {
 	//var err error
-		PFilename := fmt.Sprintf("%s/%s", path.Clean(O_OUTPUT), Filename)
-		fp, err := os.OpenFile(PFilename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
-		if err != nil {
-			log.Fatalf("ERROR: create file: ", err)
-		}
+	PFilename := fmt.Sprintf("%s/%s", path.Clean(O_OUTPUT), Filename)
+	fp, err := os.OpenFile(PFilename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("ERROR: create file: ", err)
+	}
 	return fp
 }
 
