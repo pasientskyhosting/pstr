@@ -25,6 +25,6 @@ spec:
   tls:
   - hosts:
     - {{$hostname}}
-    secretName: "{{$hostname | getDomain}}"
+    secretName: "star.{{$hostname | getDomain}}"
 {{end}}
 ---
