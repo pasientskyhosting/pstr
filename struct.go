@@ -24,6 +24,7 @@ type App struct {
 	} `json:"ports"`
 	Readiness struct {
 		Path string `json:"path,omitempty"`
+		Port int `json:"port,omitempty"`
 		Exec struct {
 			Command []string `json:"command,omitempty"`
 		} `json:"exec,omitempty"`
@@ -35,6 +36,7 @@ type App struct {
 	} `json:"readiness"`
 	Health struct {
 		Path string `json:"path,omitempty"`
+		Port int `json:"port,omitempty"`
 		Exec struct {
 			Command []string `json:"command,omitempty"`
 		} `json:"exec,omitempty"`
