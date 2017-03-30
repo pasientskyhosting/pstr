@@ -5,7 +5,7 @@ metadata:
   namespace: {{.Namespace}}
 spec:
   ports:
-  - port: 80
+  - port: {{.Deploy.Ports.Internal.HTTP}}
     protocol: TCP
     targetPort: {{.Deploy.Ports.Internal.HTTP}}
   selector:
