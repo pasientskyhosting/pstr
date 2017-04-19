@@ -17,7 +17,7 @@ type App struct {
 	Ports          struct {
 		External struct {
 			HTTP      int  `json:"http"`
-			WEBSOCKET bool `json:"websocket,omitemty"`
+			WEBSOCKET bool `json:"websocket,omitempty"`
 		} `json:"external"`
 		Internal struct {
 			HTTP int `json:"http"`
