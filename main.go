@@ -27,6 +27,7 @@ var (
 	NEW_RELIC_API_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")
 	NEW_RELIC_LICENSE_KEY      = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
 	ssh_key                    = os.Getenv("ssh_key")
+	bamboo_AWS_HOSTNAME        = os.Getenv("bamboo_AWS_HOSTNAME")
 
 	// Static configs
 	application_name  string

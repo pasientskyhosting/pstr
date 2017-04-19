@@ -13,6 +13,7 @@ func createDeploy(AppObj App) {
 	values := &Deploytmpl{
 		Application_name:           application_name,
 		Bamboo_deploy_release:      bamboo_deploy_release,
+		Bamboo_AWS_HOSTNAME:        bamboo_AWS_HOSTNAME,
 		Build_id:                   build_id,
 		Build_nr:                   bamboo_buildNumber,
 		CONSUL_APPLICATION:         CONSUL_APPLICATION,

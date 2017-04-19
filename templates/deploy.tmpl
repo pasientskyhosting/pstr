@@ -92,7 +92,9 @@ spec:
           - name: NEW_RELIC_API_KEY_PASSWORD
             value: "{{.NEW_RELIC_API_KEY_PASSWORD}}"
           - name: TERM
-            value: "xterm"  
+            value: "xterm"
+          {{if .Deploy.Ports.External.HTTP}}- name: PS_EXTERNAL_HOST
+            value: "{{.Bamboo_AWS_HOSTNAME}}"{{end}}
         resources:
           requests:
             cpu: {{if .Deploy.Resources.Requests.Cpu}}{{.Deploy.Resources.Requests.Cpu}}{{else}}100m{{end}}

@@ -97,6 +97,7 @@ type Clinictmpl struct {
 
 type Deploytmpl struct {
 	Application_name           string
+	Bamboo_AWS_HOSTNAME        string
 	Bamboo_deploy_release      string
 	Build_id                   string
 	Build_nr                   string
