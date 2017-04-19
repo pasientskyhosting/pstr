@@ -41,14 +41,14 @@ spec:
         {{else if .Deploy.PreStop.Exec.Command}}lifecycle:
           preStop:
             exec:
-              command: [{{ range $index,$cmd := .Deploy.PreStop.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end -}}
+              command: [{{ range $index,$cmd := .Deploy.PreStop.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end}}
         readinessProbe:
           {{if .Deploy.Readiness.Path -}}httpGet:
             path: {{.Deploy.Readiness.Path}}
             port: {{if .Deploy.Readiness.Port}}{{.Deploy.Readiness.Port}}{{else}}80{{end}}
             scheme: HTTP
           {{else if .Deploy.Readiness.Exec.Command}}exec:
-            command: [{{ range $index,$cmd := .Deploy.Readiness.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end -}}
+            command: [{{ range $index,$cmd := .Deploy.Readiness.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end}}
           initialDelaySeconds: {{.Deploy.Readiness.InitialDelaySeconds}}
           periodSeconds: {{.Deploy.Readiness.PeriodSeconds}}
           failureThreshold: {{.Deploy.Readiness.FailureThreshold}}
@@ -60,7 +60,7 @@ spec:
             port: {{if .Deploy.Health.Port}}{{.Deploy.Health.Port}}{{else}}80{{end}}
             scheme: HTTP
           {{else if .Deploy.Health.Exec.Command}}exec:
-            command: [{{ range $index,$cmd := .Deploy.Health.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end -}}
+            command: [{{ range $index,$cmd := .Deploy.Health.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end}}
           initialDelaySeconds: {{.Deploy.Health.InitialDelaySeconds}}
           periodSeconds: {{.Deploy.Health.PeriodSeconds}}
           failureThreshold: {{.Deploy.Health.FailureThreshold}}
