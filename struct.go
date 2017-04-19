@@ -16,7 +16,8 @@ type App struct {
 	DockerFilePath string `json:"dockerFilePath,omitempty"`
 	Ports          struct {
 		External struct {
-			HTTP int `json:"http"`
+			HTTP      int  `json:"http"`
+			WEBSOCKET bool `json:"websocket,omitemty"`
 		} `json:"external"`
 		Internal struct {
 			HTTP int `json:"http"`

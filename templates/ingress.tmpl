@@ -12,6 +12,7 @@ metadata:
     nginx.org/hsts-max-age: "15638400"
     nginx.org/hsts-include-subdomains: "true"
     nginx.org/server-tokens: "false"
+    {{if .Deploy.Ports.External.WEBSOCKET}}nginx.org/websocket-services: "{{.Application_name}}-{{.Deploy.Name}}"{{end}}
 spec:
   rules:
 {{range $hostname := .Hostnames}}
