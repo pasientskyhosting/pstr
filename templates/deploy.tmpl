@@ -41,14 +41,14 @@ spec:
         {{else if .Deploy.PreStop.Exec.Command}}lifecycle:
           preStop:
             exec:
-              command: [{{ range $index,$cmd := .Deploy.PreStop.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end}}
+              command: [{{ range $index,$cmd := .Deploy.PreStop.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end -}}
         readinessProbe:
           {{if .Deploy.Readiness.Path -}}httpGet:
             path: {{.Deploy.Readiness.Path}}
             port: {{if .Deploy.Readiness.Port}}{{.Deploy.Readiness.Port}}{{else}}80{{end}}
             scheme: HTTP
           {{else if .Deploy.Readiness.Exec.Command}}exec:
-            command: [{{ range $index,$cmd := .Deploy.Readiness.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end}}
+            command: [{{ range $index,$cmd := .Deploy.Readiness.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end -}}
           initialDelaySeconds: {{.Deploy.Readiness.InitialDelaySeconds}}
           periodSeconds: {{.Deploy.Readiness.PeriodSeconds}}
           failureThreshold: {{.Deploy.Readiness.FailureThreshold}}
@@ -60,12 +60,12 @@ spec:
             port: {{if .Deploy.Health.Port}}{{.Deploy.Health.Port}}{{else}}80{{end}}
             scheme: HTTP
           {{else if .Deploy.Health.Exec.Command}}exec:
-            command: [{{ range $index,$cmd := .Deploy.Health.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end}}
+            command: [{{ range $index,$cmd := .Deploy.Health.Exec.Command}}{{if $index}},"{{$cmd}}"{{else}}"{{$cmd}}"{{end}}{{end}}]{{end -}}
           initialDelaySeconds: {{.Deploy.Health.InitialDelaySeconds}}
           periodSeconds: {{.Deploy.Health.PeriodSeconds}}
           failureThreshold: {{.Deploy.Health.FailureThreshold}}
-          timeoutSeconds: {{.Deploy.Readiness.TimeoutSeconds}}
-          successThreshold: 1
+          timeoutSeconds: {{.Deploy.Health.TimeoutSeconds}}
+          successThreshold: {{.Deploy.Health.SuccessThreshold}}     
         env:
           - name: PS_CONSUL_FULL_URL
             value: "{{.CONSUL_FULL_URL}}"
@@ -91,11 +91,17 @@ spec:
             value: "{{.NEW_RELIC_API_URL}}"
           - name: NEW_RELIC_API_KEY_PASSWORD
             value: "{{.NEW_RELIC_API_KEY_PASSWORD}}"
+          - name: TERM
+            value: "xterm"  
         resources:
           requests:
-            cpu: 100m
+            cpu: {{if .Deploy.Resources.Requests.Cpu}}{{.Deploy.Resources.Requests.Cpu}}{{else}}100m{{end}}
+            memory: {{if .Deploy.Resources.Requests.Memory}}{{.Deploy.Resources.Requests.Memory}}{{else}}200Mi{{end}}
+          limits:
+            cpu: {{if .Deploy.Resources.Limits.Cpu}}{{.Deploy.Resources.Limits.Cpu}}{{else}}1{{end}}
+            memory: {{if .Deploy.Resources.Limits.Memory}}{{.Deploy.Resources.Limits.Memory}}{{else}}4Gi{{end}}
         ports:
-        - containerPort: 80
+        - containerPort: {{.Deploy.Ports.Internal.HTTP}}
           protocol: TCP
       restartPolicy: Always
       terminationGracePeriodSeconds: 30

@@ -24,7 +24,7 @@ type App struct {
 	} `json:"ports"`
 	Readiness struct {
 		Path string `json:"path,omitempty"`
-		Port int `json:"port,omitempty"`
+		Port int    `json:"port,omitempty"`
 		Exec struct {
 			Command []string `json:"command,omitempty"`
 		} `json:"exec,omitempty"`
@@ -36,7 +36,7 @@ type App struct {
 	} `json:"readiness"`
 	Health struct {
 		Path string `json:"path,omitempty"`
-		Port int `json:"port,omitempty"`
+		Port int    `json:"port,omitempty"`
 		Exec struct {
 			Command []string `json:"command,omitempty"`
 		} `json:"exec,omitempty"`
@@ -55,6 +55,16 @@ type App struct {
 			Command []string `json:"command,omitempty"`
 		} `json:"exec,omitempty"`
 	} `json:"preStop"`
+	Resources struct {
+		Requests struct {
+			Cpu    string `json:"cpu,omitempty"`
+			Memory string `json:"memory,omitempty"`
+		} `json:"requests,omitempty"`
+		Limits struct {
+			Cpu    string `json:"cpu,omitempty"`
+			Memory string `json:"memory,omitempty"`
+		} `json:"limits,omitempty"`
+	} `json:"resources,omitempty"`
 }
 
 type Ingresstmpl struct {
