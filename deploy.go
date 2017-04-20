@@ -31,7 +31,6 @@ func createDeploy(AppObj App) {
 		NEW_RELIC_LICENSE_KEY:      NEW_RELIC_LICENSE_KEY,
 		Ssh_key:                    ssh_key,
 	}
-
 	t := template.Must(template.ParseFiles("templates/deploy.tmpl"))
 	err := t.Execute(fp, values)
 	if err != nil {

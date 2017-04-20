@@ -66,6 +66,7 @@ spec:
           failureThreshold: {{.Deploy.Health.FailureThreshold}}
           timeoutSeconds: {{.Deploy.Health.TimeoutSeconds}}
           successThreshold: {{.Deploy.Health.SuccessThreshold}}     
+
         env:
           - name: PS_CONSUL_FULL_URL
             value: "{{.CONSUL_FULL_URL}}"
@@ -95,6 +96,11 @@ spec:
             value: "xterm"
           {{if .Deploy.Ports.External.HTTP}}- name: PS_EXTERNAL_HOST
             value: "{{.Bamboo_AWS_HOSTNAME}}"{{end}}
+        {{if.Deploy.Secretmounts}}volumeMounts:{{end}}
+{{range $Index, $Secret := .Deploy.Secretmounts}}
+        - mountPath: "{{$Secret.Mountpath}}"
+          name: {{$Secret.Secretname}}
+{{end}}
         resources:
           requests:
             cpu: {{if .Deploy.Resources.Requests.Cpu}}{{.Deploy.Resources.Requests.Cpu}}{{else}}100m{{end}}
@@ -107,4 +113,10 @@ spec:
           protocol: TCP
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
+      {{if.Deploy.Secretmounts}}volumes:{{end}}
+{{range $Index, $Secret := .Deploy.Secretmounts}}
+      - name: {{$Secret.Secretname}}
+        secret:
+          secretName: {{$Secret.Secretname}}
+{{end}}
 ---

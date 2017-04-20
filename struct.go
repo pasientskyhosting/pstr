@@ -66,6 +66,10 @@ type App struct {
 			Memory string `json:"memory,omitempty"`
 		} `json:"limits,omitempty"`
 	} `json:"resources,omitempty"`
+	Secretmounts []struct {
+		Mountpath  string `json:"mountpath"`
+		Secretname string `json:"secretname"`
+	} `json:"secretmounts"`
 }
 
 type Ingresstmpl struct {
