@@ -99,7 +99,7 @@ spec:
         {{if.Deploy.Secretmounts}}volumeMounts:{{end}}
 {{range $Index, $Secret := .Deploy.Secretmounts}}
         - mountPath: "{{$Secret.Mountpath}}"
-          name: {{$Secret.Secretname}}
+          name: {{$Secret.Secretname}}-volume
 {{end}}
         resources:
           requests:
@@ -115,7 +115,7 @@ spec:
       terminationGracePeriodSeconds: 30
       {{if.Deploy.Secretmounts}}volumes:{{end}}
 {{range $Index, $Secret := .Deploy.Secretmounts}}
-      - name: {{$Secret.Secretname}}
+      - name: {{$Secret.Secretname}}-volume
         secret:
           secretName: {{$Secret.Secretname}}
 {{end}}
