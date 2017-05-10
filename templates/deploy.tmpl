@@ -65,7 +65,7 @@ spec:
           periodSeconds: {{.Deploy.Health.PeriodSeconds}}
           failureThreshold: {{.Deploy.Health.FailureThreshold}}
           timeoutSeconds: {{.Deploy.Health.TimeoutSeconds}}
-          successThreshold: {{.Deploy.Health.SuccessThreshold}}     
+          successThreshold: {{.Deploy.Health.SuccessThreshold}}
 
         env:
           - name: PS_CONSUL_FULL_URL
@@ -94,6 +94,8 @@ spec:
             value: "{{.NEW_RELIC_API_KEY_PASSWORD}}"
           - name: TERM
             value: "xterm"
+          - name: TZ
+            value: "Europe/Copenhagen"
           {{if .Deploy.Ports.External.HTTP}}- name: PS_EXTERNAL_HOST
             value: "{{.Bamboo_AWS_HOSTNAME}}"{{end}}
         {{if.Deploy.Secretmounts}}volumeMounts:{{end}}
