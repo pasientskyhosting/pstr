@@ -108,6 +108,7 @@ type Deploytmpl struct {
 	Build_nr                   string
 	CONSUL_APPLICATION         string
 	CONSUL_ENVIRONMENT         string
+    DEPLOYMENT_DATACENTER      string
 	CONSUL_FULL_URL            *url.URL
 	CONSUL_PASSWORD            string
 	CONSUL_URL                 *url.URL

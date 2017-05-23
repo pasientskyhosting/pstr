@@ -22,6 +22,7 @@ var (
 	cluster_ip                 = os.Getenv("cluster_ip")
 	CONSUL_APPLICATION         = os.Getenv("bamboo_CONSUL_APPLICATION")
 	CONSUL_ENVIRONMENT         = os.Getenv("bamboo_CONSUL_ENVIRONMENT")
+    DEPLOYMENT_DATACENTER      = os.Getenv("bamboo_DEPLOYMENT_DATACENTER")
 	CONSUL_PASSWORD            = os.Getenv("bamboo_CONSUL_PASSWORD")
 	CONSUL_USERNAME            = os.Getenv("bamboo_CONSUL_USERNAME")
 	NEW_RELIC_API_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")

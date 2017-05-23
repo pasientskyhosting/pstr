@@ -84,6 +84,8 @@ spec:
             value: "{{.Build_id}}"
           - name: PS_BUILD_NR
             value: "{{.Build_nr}}"
+          - name: PS_DEPLOYMENT_DATACENTER
+            value: "{.DEPLOYMENT_DATACENTER}"
           - name: NEW_RELIC_LICENSE_KEY
             value: "{{.NEW_RELIC_LICENSE_KEY}}"
           - name: PS_BASE_HOST
