@@ -22,7 +22,7 @@ func createDeploy(AppObj App) {
 		CONSUL_PASSWORD:            CONSUL_PASSWORD,
 		CONSUL_URL:                 CONSUL_URL,
 		CONSUL_USERNAME:            CONSUL_USERNAME,
-        DEPLOYMENT_DATACENTER       DEPLOYMENT_DATACENTER,
+        DEPLOYMENT_DATACENTER:      DEPLOYMENT_DATACENTER,
 		Deploy:                     AppObj,
 		Deploy_name:                fmt.Sprintf("%s-%s-%s", application_name, AppObj.Name, build_id),
 		Git_repo:                   git_repo,
