@@ -100,7 +100,10 @@ spec:
             value: "Europe/Copenhagen"
           {{if .Deploy.Ports.External.HTTP}}- name: PS_EXTERNAL_HOST
             value: "{{.Bamboo_AWS_HOSTNAME}}"{{end}}
-        {{if.Deploy.Secretmounts}}volumeMounts:{{end}}
+        volumeMounts:
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: no-api-access-please
+          readOnly: true
 {{range $Index, $Secret := .Deploy.Secretmounts}}
         - mountPath: "{{$Secret.Mountpath}}"
           name: {{$Secret.Secretname}}-volume
@@ -117,7 +120,9 @@ spec:
           protocol: TCP
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
-      {{if.Deploy.Secretmounts}}volumes:{{end}}
+      volumes:
+      - name: no-api-access-please
+        emptyDir: {}
 {{range $Index, $Secret := .Deploy.Secretmounts}}
       - name: {{$Secret.Secretname}}-volume
         secret:
