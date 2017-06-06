@@ -86,10 +86,12 @@ spec:
             value: "{{.Build_nr}}"
           - name: PS_DEPLOYMENT_DATACENTER
             value: "{{.DEPLOYMENT_DATACENTER}}"
-          - name: NEW_RELIC_LICENSE_KEY
-            value: "{{.NEW_RELIC_LICENSE_KEY}}"
           - name: PS_BASE_HOST
             value: "{{.Application_name}}-{{.Deploy.Name}}-{{.Build_id}}.{{.Namespace}}.svc.cluster.local"
+            {{if .Deploy.Ports.External.HTTP}}- name: PS_EXTERNAL_HOST
+              value: "{{.Bamboo_AWS_HOSTNAME}}"{{end}}
+          - name: NEW_RELIC_LICENSE_KEY
+            value: "{{.NEW_RELIC_LICENSE_KEY}}"
           - name: NEW_RELIC_API_URL
             value: "{{.NEW_RELIC_API_URL}}"
           - name: NEW_RELIC_API_KEY_PASSWORD
@@ -98,8 +100,6 @@ spec:
             value: "xterm"
           - name: TZ
             value: "Europe/Copenhagen"
-          {{if .Deploy.Ports.External.HTTP}}- name: PS_EXTERNAL_HOST
-            value: "{{.Bamboo_AWS_HOSTNAME}}"{{end}}
         volumeMounts:
         - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
           name: no-api-access
