@@ -88,8 +88,8 @@ spec:
             value: "{{.DEPLOYMENT_DATACENTER}}"
           - name: PS_BASE_HOST
             value: "{{.Application_name}}-{{.Deploy.Name}}-{{.Build_id}}.{{.Namespace}}.svc.cluster.local"
-            {{if .Deploy.Ports.External.HTTP}}- name: PS_EXTERNAL_HOST
-              value: "{{.Bamboo_AWS_HOSTNAME}}"{{end}}
+          {{if .Deploy.Ports.External.HTTP}}- name: PS_EXTERNAL_HOST
+            value: "{{.Bamboo_AWS_HOSTNAME}}"{{end}}
           - name: NEW_RELIC_LICENSE_KEY
             value: "{{.NEW_RELIC_LICENSE_KEY}}"
           - name: NEW_RELIC_API_URL
