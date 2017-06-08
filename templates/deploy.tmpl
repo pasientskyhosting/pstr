@@ -122,7 +122,8 @@ spec:
       terminationGracePeriodSeconds: 30
       volumes:
       - name: no-api-access
-        emptyDir: {}
+        emptyDir:
+          medium: "Memory"
 {{range $Index, $Secret := .Deploy.Secretmounts}}
       - name: {{$Secret.Secretname}}-volume
         secret:
