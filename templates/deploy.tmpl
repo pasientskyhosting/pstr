@@ -109,12 +109,12 @@ spec:
           name: {{$Secret.Secretname}}-volume
 {{end}}
         resources:
-          requests:
-            cpu: {{if .Deploy.Resources.Requests.Cpu}}{{.Deploy.Resources.Requests.Cpu}}{{else}}100m{{end}}
-            memory: {{if .Deploy.Resources.Requests.Memory}}{{.Deploy.Resources.Requests.Memory}}{{else}}200Mi{{end}}
-          limits:
-            cpu: {{if .Deploy.Resources.Limits.Cpu}}{{.Deploy.Resources.Limits.Cpu}}{{else}}1{{end}}
-            memory: {{if .Deploy.Resources.Limits.Memory}}{{.Deploy.Resources.Limits.Memory}}{{else}}4Gi{{end}}
+          {{if (or .Deploy.Resources.Requests.Cpu .Deploy.Resources.Requests.Memory)}}requests:{{end}}
+            {{if .Deploy.Resources.Requests.Cpu}}cpu: {{.Deploy.Resources.Requests.Cpu}}{{end}}
+            {{if .Deploy.Resources.Requests.Memory}}memory: {{.Deploy.Resources.Requests.Memory}}{{end}}
+          {{if (or .Deploy.Resources.Limits.Cpu .Deploy.Resources.Limits.Memory)}}limits:{{end}}
+            {{if .Deploy.Resources.Limits.Cpu}}cpu: {{.Deploy.Resources.Limits.Cpu}}{{end}}
+            {{if .Deploy.Resources.Limits.Memory}}memory: {{.Deploy.Resources.Limits.Memory}}{{end}}
         ports:
         - containerPort: {{.Deploy.Ports.Internal.HTTP}}
           protocol: TCP
