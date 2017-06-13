@@ -168,7 +168,7 @@ func main() {
 					createGenericService(AppObj)
 				}
 				if M_AUTOSCALER {
-					if AppObj.Resources.Requests.Cpu != "" {
+					if AppObj.Resources.Requests.Cpu != "" && AppObj.Scalability.MinReplicas > 0 && AppObj.Scalability.MaxReplicas > 1 && AppObj.Scalability.TargetCPUUtilizationPercentage > 0 {
 						createAutoScaler(AppObj)
 					}
 				}
