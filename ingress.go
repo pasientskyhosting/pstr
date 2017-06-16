@@ -26,10 +26,12 @@ func createIngress(AppObj App) {
                 list = make(map[string]string)
 
                 // Subdomains - order matters
-                list["svc.patientsky.no"] = "star.svc.patientsky.no"
+                list["svc.pasientsky.no"] = "star.svc.pasientsky.no"
 
                 // Domains
                 list["patientsky.no"] = "star.patientsky.no"
+                list["pasientsky.no"] = "star.pasientsky.no"
+                list["patientsky.com"] = "star.patientsky.com"
                 list["gel.camp"] = "star.gel.camp"
                 list["publicdns.zone"] = "star.publicdns.zone"
                 list["privatedns.zone"] = "star.privatedns.zone"
