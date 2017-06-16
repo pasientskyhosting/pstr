@@ -4,6 +4,7 @@ import (
 	"github.com/weppos/publicsuffix-go/publicsuffix"
 	"log"
 	"text/template"
+    "strings"
 )
 
 func createIngress(AppObj App) {
@@ -20,6 +21,28 @@ func createIngress(AppObj App) {
 				}
 				return res
 			},
+            "mapDomainToCert": func (hostname string) string {
+                var list map[string]string
+                list = make(map[string]string)
+
+                // Subdomains - order matters
+                list["svc.patientsky.no"] = "star.svc.patientsky.no"
+
+                // Domains
+                list["patientsky.no"] = "star.patientsky.no"
+                list["gel.camp"] = "star.gel.camp"
+                list["publicdns.zone"] = "star.publicdns.zone"
+                list["privatedns.zone"] = "star.privatedns.zone"
+
+                for domain, cert := range list {
+                    if strings.Contains(hostname, domain) {
+                        return cert
+                    }
+                }
+
+                // Return default domain
+                return "star.publicdns.zone"
+            },
 		}
 
 		values := &Ingresstmpl{
