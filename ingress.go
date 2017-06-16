@@ -23,7 +23,7 @@ func createIngress(AppObj App) {
 			},
 			"mapDomainToCert": func(hostname string) string {
 				// List of domains
-                subdomain_list := map[string]string{
+				subdomain_list := map[string]string{
 					// Subdomains - order matters
 					"svc.pasientsky.no": "star.svc.pasientsky.no",
 				}
@@ -38,7 +38,7 @@ func createIngress(AppObj App) {
 					"privatedns.zone": "star.privatedns.zone",
 				}
 
-                // Find cert from hostname
+				// Find cert from hostname
 				for domain, cert := range subdomain_list {
 					if strings.Contains(hostname, domain) {
 						return cert
