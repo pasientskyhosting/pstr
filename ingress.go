@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/weppos/publicsuffix-go/publicsuffix"
 	"log"
+	"strings"
 	"text/template"
-    "strings"
 )
 
 func createIngress(AppObj App) {
@@ -21,31 +21,31 @@ func createIngress(AppObj App) {
 				}
 				return res
 			},
-            "mapDomainToCert": func (hostname string) string {
-                // List of domains
-                list := map[string]string {
-                    // Subdomains - order matters
-                    "svc.pasientsky.no": "star.svc.pasientsky.no",
+			"mapDomainToCert": func(hostname string) string {
+				// List of domains
+				list := map[string]string{
+					// Subdomains - order matters
+					"svc.pasientsky.no": "star.svc.pasientsky.no",
 
-                    // Domains
-                    "patientsky.no": "star.patientsky.no",
-                    "pasientsky.no": "star.pasientsky.no",
-                    "patientsky.com": "star.patientsky.com",
-                    "gel.camp": "star.gel.camp",
-                    "publicdns.zone": "star.publicdns.zone",
-                    "privatedns.zone": "star.privatedns.zone",
-                }
+					// Domains
+					"patientsky.no":   "star.patientsky.no",
+					"pasientsky.no":   "star.pasientsky.no",
+					"patientsky.com":  "star.patientsky.com",
+					"gel.camp":        "star.gel.camp",
+					"publicdns.zone":  "star.publicdns.zone",
+					"privatedns.zone": "star.privatedns.zone",
+				}
 
-                // Find cert from hostname
-                for domain, cert := range list {
-                    if strings.Contains(hostname, domain) {
-                        return cert
-                    }
-                }
+				// Find cert from hostname
+				for domain, cert := range list {
+					if strings.Contains(hostname, domain) {
+						return cert
+					}
+				}
 
-                // Return default domain
-                return "star.publicdns.zone"
-            },
+				// Return default domain
+				return "star.publicdns.zone"
+			},
 		}
 
 		values := &Ingresstmpl{
