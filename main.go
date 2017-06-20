@@ -169,7 +169,7 @@ func main() {
 				}
 
                 // Set a default
-                if AppObj.Scalability.TargetCPUUtilizationPercentage = "" || AppObj.Scalability.TargetCPUUtilizationPercentage < 10 {
+                if AppObj.Scalability.TargetCPUUtilizationPercentage == "" || AppObj.Scalability.TargetCPUUtilizationPercentage < 10 {
                     AppObj.Scalability.TargetCPUUtilizationPercentage = 70
                 }
 
