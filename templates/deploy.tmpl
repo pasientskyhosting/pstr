@@ -45,7 +45,7 @@ spec:
         {{else}}lifecycle:
           preStop:
             exec:
-              command: ["sleep, "15"]{{end}}
+              command: ["sleep", "15"]{{end}}
         readinessProbe:
           {{if .Deploy.Readiness.Path -}}httpGet:
             path: {{.Deploy.Readiness.Path}}
