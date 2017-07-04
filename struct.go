@@ -101,24 +101,25 @@ type Clinictmpl struct {
 }
 
 type Deploytmpl struct {
-	Application_name           string
-	Bamboo_AWS_HOSTNAME        string
-	Bamboo_deploy_release      string
-	Build_id                   string
-	Build_nr                   string
-	CONSUL_APPLICATION         string
-	CONSUL_ENVIRONMENT         string
-	DEPLOYMENT_DATACENTER      string
-	CONSUL_FULL_URL            *url.URL
-	CONSUL_PASSWORD            string
-	CONSUL_URL                 *url.URL
-	CONSUL_USERNAME            string
-	Deploy                     App
-	Deploy_name                string
-	Git_repo                   *url.URL
-	Namespace                  string
-	NEW_RELIC_API_KEY_PASSWORD string
-	NEW_RELIC_API_URL          *url.URL
-	NEW_RELIC_LICENSE_KEY      string
-	Ssh_key                    string
+	Application_name             string
+	Bamboo_AWS_HOSTNAME          string
+	Bamboo_deploy_release        string
+	Build_id                     string
+	Build_nr                     string
+	CONSUL_APPLICATION           string
+	CONSUL_ENVIRONMENT           string
+	DEPLOYMENT_DATACENTER        string
+	CONSUL_FULL_URL              *url.URL
+	CONSUL_PASSWORD              string
+	CONSUL_URL                   *url.URL
+	CONSUL_USERNAME              string
+	Deploy                       App
+	Deploy_name                  string
+	Git_repo                     *url.URL
+	Namespace                    string
+	NEW_RELIC_API_KEY_PASSWORD   string
+	NEW_RELIC_API_URL            *url.URL
+	NEW_RELIC_LICENSE_KEY        string
+    NEW_RELIC_ADMIN_KEY_PASSWORD string
+	Ssh_key                      string
 }

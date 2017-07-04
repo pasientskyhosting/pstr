@@ -16,20 +16,21 @@ import (
 
 var (
 	// Variables gotten from Environment
-	bamboo_buildNumber         = os.Getenv("bamboo_buildNumber")
-	bamboo_CONSUL_URL          = os.Getenv("bamboo_CONSUL_URL")
-	bamboo_deploy_release      = os.Getenv("bamboo_deploy_release")
-	bamboo_NEW_RELIC_API_URL   = os.Getenv("bamboo_NEW_RELIC_API_URL")
-	cluster_ip                 = os.Getenv("cluster_ip")
-	CONSUL_APPLICATION         = os.Getenv("bamboo_CONSUL_APPLICATION")
-	CONSUL_ENVIRONMENT         = os.Getenv("bamboo_CONSUL_ENVIRONMENT")
-	DEPLOYMENT_DATACENTER      = os.Getenv("bamboo_DEPLOYMENT_DATACENTER")
-	CONSUL_PASSWORD            = os.Getenv("bamboo_CONSUL_PASSWORD")
-	CONSUL_USERNAME            = os.Getenv("bamboo_CONSUL_USERNAME")
-	NEW_RELIC_API_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")
-	NEW_RELIC_LICENSE_KEY      = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
-	ssh_key                    = os.Getenv("ssh_key")
-	bamboo_AWS_HOSTNAME        = os.Getenv("bamboo_AWS_HOSTNAME")
+	bamboo_buildNumber           = os.Getenv("bamboo_buildNumber")
+	bamboo_CONSUL_URL            = os.Getenv("bamboo_CONSUL_URL")
+	bamboo_deploy_release        = os.Getenv("bamboo_deploy_release")
+	bamboo_NEW_RELIC_API_URL     = os.Getenv("bamboo_NEW_RELIC_API_URL")
+	cluster_ip                   = os.Getenv("cluster_ip")
+	CONSUL_APPLICATION           = os.Getenv("bamboo_CONSUL_APPLICATION")
+	CONSUL_ENVIRONMENT           = os.Getenv("bamboo_CONSUL_ENVIRONMENT")
+	DEPLOYMENT_DATACENTER        = os.Getenv("bamboo_DEPLOYMENT_DATACENTER")
+	CONSUL_PASSWORD              = os.Getenv("bamboo_CONSUL_PASSWORD")
+	CONSUL_USERNAME              = os.Getenv("bamboo_CONSUL_USERNAME")
+	NEW_RELIC_API_KEY_PASSWORD   = os.Getenv("bamboo_NEW_RELIC_API_KEY_PASSWORD")
+	NEW_RELIC_LICENSE_KEY        = os.Getenv("bamboo_NEW_RELIC_LICENSE_KEY_PASSWORD")
+    NEW_RELIC_ADMIN_KEY_PASSWORD = os.Getenv("bamboo_NEW_RELIC_ADMIN_KEY_PASSWORD")
+	ssh_key                      = os.Getenv("ssh_key")
+	bamboo_AWS_HOSTNAME          = os.Getenv("bamboo_AWS_HOSTNAME")
 
 	// Static configs
 	application_name  string
