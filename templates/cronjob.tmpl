@@ -1,0 +1,83 @@
+apiVersion: batch/v2alpha1
+kind: CronJob
+metadata:
+  labels:
+    application: "{{.Application_name}}-{{.Deploy.Name}}"
+    build: "{{.Build_id}}"
+    type: "{{.Deploy.Type}}"
+    bamboo_deploy_release: "{{.Bamboo_deploy_release}}"
+  name: "{{.Deploy_name}}"
+  namespace: "{{.Namespace}}"
+spec:
+  schedule: "{{.Deploy.Cron.Schedule}}"
+  successfulJobsHistoryLimit: "{{if .Deploy.Cron.SuccessfulJobsHistoryLimit}}{{.Deploy.Cron.SuccessfulJobsHistoryLimit}}{{else}}1{{end}}"
+  failedJobsHistoryLimit: "{{if .Deploy.Cron.FailedJobsHistoryLimit}}{{.Deploy.Cron.FailedJobsHistoryLimit}}{{else}}1{{end}}"
+  concurrencyPolicy: "{{if .Deploy.Cron.ConcurrencyPolicy}}{{.Deploy.Cron.ConcurrencyPolicy}}{{else}}Forbid{{end}}"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            application: "{{.Application_name}}-{{.Deploy.Name}}"
+            build: "{{.Build_id}}"
+            type: "{{.Deploy.Type}}"
+            bamboo_deploy_release: "{{.Bamboo_deploy_release}}"
+        spec:
+          imagePullSecrets:
+            - name: nexus
+          containers:
+          - name: "{{.Deploy_name}}"
+            imagePullPolicy: Always
+            image: "{{.Deploy.ImageName}}"
+            volumeMounts:
+              - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+                name: no-api-access
+                readOnly: true
+            {{if (or .Deploy.Resources.Requests.Cpu .Deploy.Resources.Requests.Memory .Deploy.Resources.Limits.Cpu .Deploy.Resources.Limits.Memory)}}resources:
+              {{if (or .Deploy.Resources.Requests.Cpu .Deploy.Resources.Requests.Memory)}}requests:{{end}}
+                {{if .Deploy.Resources.Requests.Cpu}}cpu: {{.Deploy.Resources.Requests.Cpu}}{{end}}
+                {{if .Deploy.Resources.Requests.Memory}}memory: {{.Deploy.Resources.Requests.Memory}}{{end}}
+              {{if (or .Deploy.Resources.Limits.Cpu .Deploy.Resources.Limits.Memory)}}limits:{{end}}
+                {{if .Deploy.Resources.Limits.Cpu}}cpu: {{.Deploy.Resources.Limits.Cpu}}{{end}}
+                {{if .Deploy.Resources.Limits.Memory}}memory: {{.Deploy.Resources.Limits.Memory}}{{end}}{{end}}
+            lifecycle:
+              preStop:
+                exec:
+                  command: ["sleep", "15"]
+            env:
+                - name: PS_CONSUL_FULL_URL
+                  value: "{{.CONSUL_FULL_URL}}"
+                - name: PS_CONSUL_URL
+                  value: "{{.CONSUL_URL}}"
+                - name: PS_CONSUL_USERNAME
+                  value: "{{.CONSUL_USERNAME}}"
+                - name: PS_CONSUL_PASSWORD
+                  value: "{{.CONSUL_PASSWORD}}"
+                - name: PS_APPLICATION
+                  value: "{{.CONSUL_APPLICATION}}"
+                - name: PS_ENVIRONMENT
+                  value: "{{.CONSUL_ENVIRONMENT}}"
+                - name: PS_BUILD_ID
+                  value: "{{.Build_id}}"
+                - name: PS_BUILD_NR
+                  value: "{{.Build_nr}}"
+                - name: PS_DEPLOYMENT_DATACENTER
+                  value: "{{.DEPLOYMENT_DATACENTER}}"
+                - name: NEW_RELIC_LICENSE_KEY
+                  value: "{{.NEW_RELIC_LICENSE_KEY}}"
+                - name: NEW_RELIC_API_URL
+                  value: "{{.NEW_RELIC_API_URL}}"
+                - name: NEW_RELIC_API_KEY_PASSWORD
+                  value: "{{.NEW_RELIC_API_KEY_PASSWORD}}"
+                - name: NEW_RELIC_ADMIN_KEY_PASSWORD
+                  value: "{{.NEW_RELIC_ADMIN_KEY_PASSWORD}}"
+                - name: TERM
+                  value: "xterm"
+                - name: TZ
+                  value: "Europe/Copenhagen"
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          volumes:
+          - name: no-api-access
+            emptyDir:
+              medium: "Memory"

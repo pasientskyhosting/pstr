@@ -123,3 +123,52 @@ type Deploytmpl struct {
     NEW_RELIC_ADMIN_KEY_PASSWORD string
 	Ssh_key                      string
 }
+
+type Cronjobtmpl struct {
+	Application_name             string
+	Bamboo_AWS_HOSTNAME          string
+	Bamboo_deploy_release        string
+	Build_id                     string
+	Build_nr                     string
+	CONSUL_APPLICATION           string
+	CONSUL_ENVIRONMENT           string
+	DEPLOYMENT_DATACENTER        string
+	CONSUL_FULL_URL              *url.URL
+	CONSUL_PASSWORD              string
+	CONSUL_URL                   *url.URL
+	CONSUL_USERNAME              string
+	Deploy                       Cronjob
+	Deploy_name                  string
+	Git_repo                     *url.URL
+	Namespace                    string
+	NEW_RELIC_API_KEY_PASSWORD   string
+	NEW_RELIC_API_URL            *url.URL
+	NEW_RELIC_LICENSE_KEY        string
+    NEW_RELIC_ADMIN_KEY_PASSWORD string
+	Ssh_key                      string
+}
+
+type Cronjob struct {
+	Name        string `json:"name"`
+	Group       string `json:"group"`
+	Type        string `json:"type"`
+	ImageName      string `json:"imageName"`
+	DockerContext  string `json:"dockerContext,omitempty"`
+	DockerFilePath string `json:"dockerFilePath,omitempty"`
+    Cron struct {
+		SuccessfulJobsHistoryLimit string `json:"successfulJobsHistoryLimit,omitempty"`
+		FailedJobsHistoryLimit string `json:"failedJobsHistoryLimit,omitempty"`
+        ConcurrencyPolicy string `json:"concurrencyPolicy,omitempty"`
+        Schedule string `json:"schedule"`
+	} `json:"cron"`
+	Resources struct {
+		Requests struct {
+			Cpu    string `json:"cpu,omitempty"`
+			Memory string `json:"memory,omitempty"`
+		} `json:"requests,omitempty"`
+		Limits struct {
+			Cpu    string `json:"cpu,omitempty"`
+			Memory string `json:"memory,omitempty"`
+		} `json:"limits,omitempty"`
+	} `json:"resources,omitempty"`
+}

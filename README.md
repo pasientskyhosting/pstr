@@ -22,6 +22,9 @@ Renders only HPA ( AutoScaler )
 ## --ingress
 Renders only Ingress rules
 
+## --cronjob
+Renders only Cronjob rules
+
 ## --namespace <string>
 Set namespace to use in template rendering
 

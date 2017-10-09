@@ -47,6 +47,7 @@ var (
 	M_DEPLOY          bool
 	M_GERNICSERVICE   bool
 	M_INGRESS         bool
+    M_CRONJOB         bool
 	M_SERVICE         bool
 	NEW_RELIC_API_URL *url.URL
 	O_FILENAME        string
@@ -81,6 +82,7 @@ func init() {
 	flag.BoolVar(&M_AUTOSCALER, "autoscaler", false, "Create autoscaler")
 	flag.BoolVar(&M_DEPLOY, "deploy", false, "Create deployments")
 	flag.BoolVar(&M_INGRESS, "ingress", false, "Create ingress rules")
+    flag.BoolVar(&M_CRONJOB, "cronjob", false, "Create cronjob rules")
 	flag.BoolVar(&M_SERVICE, "service", false, "Create services")
 	flag.BoolVar(&M_GERNICSERVICE, "genericservice", false, "Create generic services")
 	flag.StringVar(&build_id, "build_id", "", "build_id from bamboo")
@@ -99,6 +101,7 @@ func init() {
 		M_GERNICSERVICE = true
 		M_AUTOSCALER = true
 		M_INGRESS = true
+        M_CRONJOB = true
 	}
 
 	if clinic_hostname != "" {
@@ -111,6 +114,7 @@ func CreateFH(Filename string) (fp *os.File) {
 	fp, err := os.OpenFile(PFilename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("ERROR: create file: ", err)
+        os.Exit(1)
 	}
 	return fp
 }
@@ -118,6 +122,18 @@ func CreateFH(Filename string) (fp *os.File) {
 func Check_if_limit(AppObj App) bool {
 	if O_LIMIT != "" {
 		if AppObj.Name == O_LIMIT {
+			return true
+		} else {
+			return false
+		}
+	} else {
+		return true
+	}
+}
+
+func Check_if_limit_cronjob(CronjobObj Cronjob) bool {
+	if O_LIMIT != "" {
+		if CronjobObj.Name == O_LIMIT {
 			return true
 		} else {
 			return false
@@ -137,19 +153,43 @@ func main() {
 
 		if build_id == "" || deploy_namespace == "" {
 			log.Fatalf("Missing CMD line options build (\"%s\"), or namespace (\"%s\")", build_id, deploy_namespace)
+            os.Exit(1)
 		}
+
 		file, err := ioutil.ReadFile(O_FILENAME)
 		if err != nil {
 			log.Fatalf("ERROR: File error: %v\n", err)
+            os.Exit(1)
 		}
 
 		//Get the application name from Json object
 		application_name = gjson.GetBytes(file, "application").Str
 
-		Services := gjson.GetBytes(file, "services")
+        // Do cronjob section
+        Cronjobs := gjson.GetBytes(file, "cronjobs")
+        if Cronjobs.Index == 0 {
+            log.Printf("No cronjobs found in service definition file")
+		}
 
+        Cronjobs.ForEach(func(key, value gjson.Result) bool {
+			var CronjobObj Cronjob
+			err := json.Unmarshal([]byte(value.String()), &CronjobObj)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Json Error: %s\n", err)
+				os.Exit(1)
+			} else if Check_if_limit_cronjob(CronjobObj) {
+				if M_CRONJOB {
+					createCronjob(CronjobObj)
+				}
+			}
+			return true // keep iterating
+		})
+
+        // Do services section
+		Services := gjson.GetBytes(file, "services")
 		if Services.Index == 0 {
 			log.Fatal("ERROR: Json decode error, no services found\n")
+            os.Exit(1)
 		}
 
 		Services.ForEach(func(key, value gjson.Result) bool {
@@ -187,4 +227,5 @@ func main() {
 			return true // keep iterating
 		})
 	} // end if O_FILENAME
+
 } // end main
