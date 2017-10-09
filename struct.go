@@ -156,8 +156,8 @@ type Cronjob struct {
 	DockerContext  string `json:"dockerContext,omitempty"`
 	DockerFilePath string `json:"dockerFilePath,omitempty"`
     Cron struct {
-		SuccessfulJobsHistoryLimit string `json:"successfulJobsHistoryLimit,omitempty"`
-		FailedJobsHistoryLimit string `json:"failedJobsHistoryLimit,omitempty"`
+		SuccessfulJobsHistoryLimit int `json:"successfulJobsHistoryLimit,omitempty"`
+		FailedJobsHistoryLimit int `json:"failedJobsHistoryLimit,omitempty"`
         ConcurrencyPolicy string `json:"concurrencyPolicy,omitempty"`
         Schedule string `json:"schedule"`
 	} `json:"cron"`

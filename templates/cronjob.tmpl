@@ -10,8 +10,8 @@ metadata:
   namespace: "{{.Namespace}}"
 spec:
   schedule: "{{.Deploy.Cron.Schedule}}"
-  successfulJobsHistoryLimit: "{{if .Deploy.Cron.SuccessfulJobsHistoryLimit}}{{.Deploy.Cron.SuccessfulJobsHistoryLimit}}{{else}}1{{end}}"
-  failedJobsHistoryLimit: "{{if .Deploy.Cron.FailedJobsHistoryLimit}}{{.Deploy.Cron.FailedJobsHistoryLimit}}{{else}}1{{end}}"
+  successfulJobsHistoryLimit: {{if .Deploy.Cron.SuccessfulJobsHistoryLimit}}{{.Deploy.Cron.SuccessfulJobsHistoryLimit}}{{else}}1{{end}}
+  failedJobsHistoryLimit: {{if .Deploy.Cron.FailedJobsHistoryLimit}}{{.Deploy.Cron.FailedJobsHistoryLimit}}{{else}}1{{end}}
   concurrencyPolicy: "{{if .Deploy.Cron.ConcurrencyPolicy}}{{.Deploy.Cron.ConcurrencyPolicy}}{{else}}Forbid{{end}}"
   jobTemplate:
     spec:
