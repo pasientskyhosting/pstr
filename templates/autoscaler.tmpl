@@ -8,7 +8,7 @@ spec:
     apiVersion: extensions/v1beta1
     kind: Deployment
     name: "{{.Deploy_name}}"
-  {{if .Deploy.Scalability.MinReplicas}}minReplicas: {{.Deploy.Scalability.MinReplicas}}{{end}}
+  {{if .Deploy.Scalability.MinReplicas}}minReplicas: {{if eq .Namespace "psno"}}{{.Deploy.Scalability.MinReplicas}}{{else}}1{{end}}{{end}}
   {{if .Deploy.Scalability.MaxReplicas}}maxReplicas: {{.Deploy.Scalability.MaxReplicas}}{{end}}
   {{if .Deploy.Scalability.TargetCPUUtilizationPercentage}}targetCPUUtilizationPercentage: {{.Deploy.Scalability.TargetCPUUtilizationPercentage}}{{end}}
 ---

@@ -62,10 +62,10 @@ type App struct {
 			Memory string `json:"memory,omitempty"`
 		} `json:"requests,omitempty"`
 		Limits struct {
-			Cpu    string `json:"cpu,omitempty"`
-			Memory string `json:"memory,omitempty"`
-		} `json:"limits,omitempty"`
-	} `json:"resources,omitempty"`
+			Cpu    string `json:"cpu"`
+			Memory string `json:"memory"`
+		} `json:"limits"`
+	} `json:"resources"`
 	Secretmounts []struct {
 		Mountpath  string `json:"mountpath"`
 		Secretname string `json:"secretname"`
