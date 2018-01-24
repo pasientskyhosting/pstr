@@ -9,7 +9,6 @@ metadata:
   name: "{{.Deploy_name}}"
   namespace: "{{.Namespace}}"
 spec:
-  MinReadySeconds: 5
   replicas: 1
   selector:
     matchLabels:
